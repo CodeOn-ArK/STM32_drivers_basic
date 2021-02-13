@@ -272,7 +272,7 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTXBuffer, uint32_t L
 
 	//2.  Confirm that start Generation is completed by checking the SB flag in the SR1
 	// Note: Until SB is cleared SCL will be stretched (pulled to LOW)
-	while( !(pI2CHandle->pI2Cx->SR1 & (0x1 << I2C_SR1_SB)) );						//Be in while loop until SBin SR is set
+	while( !(I2C_GetFagStatus(pI2CHandle->pI2Cx, I2C_FLAG_SR1_SB)) );						//Be in while loop until SBin SR is set
 
 	//3.   Send the address of the slave with R/nW bit set to w(0) (total 8 bits)
 	I2C_ExecuteAddrPhase(pI2CHandle->pI2Cx, SlaveAddr, WRITE);
@@ -293,7 +293,8 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTXBuffer, uint32_t L
 		while( !(I2C_GetFagStatus(pI2CHandle->pI2Cx, I2C_FLAG_SR1_TxE)) );
 
 		pI2CHandle->pI2Cx->DR  =  *(pTXBuffer);
-		Length = *pTXBuffer;
+		pTXBuffer++;
+	//	Length = *(pTXBuffer++);
 		Len--;
 	}
 

@@ -38,9 +38,9 @@ typedef struct{
 /*
  * @I2C_SCLSpeed
  */
-#define I2C_SCL_SPEED_SM		100000U
-#define I2C_SCL_SPEED_FM2K	200000U
-#define I2C_SCL_SPEED_FM4K	400000U
+#define I2C_SCL_SPEED_SM		0x186A0U
+#define I2C_SCL_SPEED_FM2K	0x30D40U
+#define I2C_SCL_SPEED_FM4K	0x61A80U
 
 /*
  *@ I2C_DeviceAddress

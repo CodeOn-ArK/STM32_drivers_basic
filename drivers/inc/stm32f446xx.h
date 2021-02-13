@@ -83,7 +83,7 @@
 /*
  * MACRO TO DEFINE I2C PERIPHERALS
  */
-#define I2C1_BA			0x40005400U
+#define 	I2C1_BA			0x40005400U
 #define	I2C2_BA			0x40005800U
 #define	I2C3_BA			0x40005C00U
 /*
@@ -115,12 +115,12 @@
 
 #define SET							1
 #define RESET						0
-#define ENABLE  				SET
-#define DISABLE 				RESET
-#define GPIO_PIN_SET		SET
-#define GPIO_PIN_RESET	RESET
-#define FLAG_RESET			RESET
-#define FLAG_SET				SET
+#define ENABLE  				1
+#define DISABLE 				0
+#define GPIO_PIN_SET		1
+#define GPIO_PIN_RESET	0
+#define FLAG_SET				1
+#define FLAG_RESET			0
 
 
 /***************************************************************** PERIPHERAL DEFINITION REGISTERS **********************************************************/
