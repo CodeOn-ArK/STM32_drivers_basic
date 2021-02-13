@@ -10,7 +10,7 @@
 
 void delay()
 {
-	for(uint32_t i = 0; i < 100000 ;i++ );
+	for(uint32_t i = 0; i < 500000 ;i++ );
 }
 int main()
 {
@@ -19,8 +19,8 @@ int main()
 	ledPin.pGPIOx = GPIOA;
 	ledPin.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUT;
 	ledPin.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_5;
-	ledPin.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_OD;
-	ledPin.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;
+	ledPin.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
+	ledPin.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
 	ledPin.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
 
 	GPIO_PeriClkCntrl(GPIOA, ENABLE);

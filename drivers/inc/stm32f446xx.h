@@ -96,31 +96,31 @@
 /*
  * MACRO TO DEFINE USART PERIPHERAL
  */
-#define	USART1_BA		0x40011000U
-#define	USART2_BA		0x40004400U
-#define	USART3_BA		0x40004800U
-#define	UART4_BA		0x40004C00U
-#define	UART5_BA		0x40005000U
-#define	USART6_BA		0x40011400U
+#define	USART1_BA			0x40011000U
+#define	USART2_BA			0x40004400U
+#define	USART3_BA			0x40004800U
+#define	UART4_BA			0x40004C00U
+#define	UART5_BA			0x40005000U
+#define	USART6_BA			0x40011400U
 /*
  * DEFINES SYSTEM PERIPHERALS
  */
-#define	EXTI_BA			0x40013C00U
-#define	SYSCFG_BA		0x40013800U
+#define	EXTI_BA				0x40013C00U
+#define	SYSCFG_BA			0x40013800U
 
 /************************************************************** MISC MACROS **********************************************************************************/
 
-#define __vo			volatile
-#define __weak			__attribute__ ((weak))
+#define __vo						volatile
+#define __weak					__attribute__((weak))
 
-#define SET				1
-#define RESET			0
-#define ENABLE  		SET
-#define DISABLE 		RESET
-#define	GPIO_PIN_SET	SET
-#define	GPIO_PIN_RESET	RESET
-#define FLAG_RESET		RESET
-#define FLAG_SET		SET
+#define SET							1
+#define RESET						0
+#define ENABLE  				SET
+#define DISABLE 				RESET
+#define GPIO_PIN_SET		SET
+#define GPIO_PIN_RESET	RESET
+#define FLAG_RESET			RESET
+#define FLAG_SET				SET
 
 
 /***************************************************************** PERIPHERAL DEFINITION REGISTERS **********************************************************/
@@ -243,6 +243,27 @@ typedef struct{
 
 }SPI_RegDef_t;
 
+
+typedef struct{
+
+	/*
+	 * THIS 	CONTAINS 	DEFINITION 	OF 	I2C		PERIPHERAL
+	 */
+
+		__vo uint32_t CR1;
+		__vo uint32_t CR2;
+		__vo uint32_t OAR1;
+		__vo uint32_t OAR2;
+		__vo uint32_t DR;
+		__vo uint32_t SR1;
+		__vo uint32_t SR2;
+		__vo uint32_t CCR;
+		__vo uint32_t TRISE;
+		__vo uint32_t FLTR;
+
+}I2C_RegDef_t;
+
+
 typedef struct{
 
 	/*
@@ -266,34 +287,39 @@ typedef struct{
 *************************************************************************************************************************************/
 
 
-#define	GPIOA			(GPIO_regdef_t *)(GPIOA_BA)
-#define	GPIOB			(GPIO_regdef_t *)(GPIOB_BA)
+#define GPIOA			(GPIO_regdef_t *)(GPIOA_BA)
+#define GPIOB			(GPIO_regdef_t *)(GPIOB_BA)
 #define GPIOC			(GPIO_regdef_t *)(GPIOC_BA)
 #define GPIOD			(GPIO_regdef_t *)(GPIOD_BA)
 #define GPIOE			(GPIO_regdef_t *)(GPIOE_BA)
-#define GPIOF			(GPIO_regdef_t *)(GPIOF_BA)
+#define GPIOF				(GPIO_regdef_t *)(GPIOF_BA)
 #define GPIOG			(GPIO_regdef_t *)(GPIOG_BA)
 #define GPIOH			(GPIO_regdef_t *)(GPIOH_BA)
 
 
 
-#define RCC 			((RCC_RegDef_t *)(RCC_BA))
-#define EXTI			((EXTI_RegDef_t *)(EXTI_BA))
+#define RCC 				((RCC_RegDef_t *)(RCC_BA))
+#define EXTI				((EXTI_RegDef_t *)(EXTI_BA))
 #define SYSCFG			((SYSCFG_RegDef_t *)(SYSCFG_BA))
 
 
-#define SPI1			((SPI_RegDef_t *)(SPI1_BA))
-#define SPI2			((SPI_RegDef_t *)(SPI2_BA))
-#define SPI3			((SPI_RegDef_t *)(SPI3_BA))
-#define SPI4			((SPI_RegDef_t *)(SPI4_BA))
+#define SPI1				((SPI_RegDef_t *)(SPI1_BA))
+#define SPI2				((SPI_RegDef_t *)(SPI2_BA))
+#define SPI3				((SPI_RegDef_t *)(SPI3_BA))
+#define SPI4				((SPI_RegDef_t *)(SPI4_BA))
 
 
-#define	USART1		((USART_RegDef_t *)(USART1_BA))
-#define	USART2		((USART_RegDef_t *)(USART2_BA))
-#define	USART3		((USART_RegDef_t *)(USART3_BA))
-#define	UART4		((USART_RegDef_t *)(UART4_BA))
-#define	UART5		((USART_RegDef_t *)(UART5_BA))
-#define	USART6		((USART_RegDef_t *)(USART6_BA))
+#define USART1			((USART_RegDef_t *)(USART1_BA))
+#define USART2			((USART_RegDef_t *)(USART2_BA))
+#define USART3			((USART_RegDef_t *)(USART3_BA))
+#define UART4			((USART_RegDef_t *)(UART4_BA))
+#define UART5			((USART_RegDef_t *)(UART5_BA))
+#define USART6			((USART_RegDef_t *)(USART6_BA))
+
+
+#define I2C1				((I2C_RegDef_t *)(I2C1_BA))
+#define I2C2				((I2C_RegDef_t *)(I2C2_BA))
+#define I2C3				((I2C_RegDef_t *)(I2C3_BA))
 
 
 /********************************** ENABLE MACROS *************************************/
@@ -358,10 +384,10 @@ typedef struct{
  ***********/
 #define GPIOA_CLK_DI()			(RCC->AHB1RSTR |= (0x1 << 0))
 #define GPIOB_CLK_DI()			(RCC->AHB1RSTR |= (0x1 << 1))
-#define GPIOC_CLK_DI()			(RCC->AHB1RSTR |= (0x1 << 2))
+#define GPIOC_CLK_DI()				(RCC->AHB1RSTR |= (0x1 << 2))
 #define GPIOD_CLK_DI()			(RCC->AHB1RSTR |= (0x1 << 3))
-#define GPIOE_CLK_DI()			(RCC->AHB1RSTR |= (0x1 << 4))
-#define GPIOF_CLK_DI()			(RCC->AHB1RSTR |= (0x1 << 5))
+#define GPIOE_CLK_DI()				(RCC->AHB1RSTR |= (0x1 << 4))
+#define GPIOF_CLK_DI()				(RCC->AHB1RSTR |= (0x1 << 5))
 #define GPIOG_CLK_DI()			(RCC->AHB1RSTR |= (0x1 << 6))
 #define GPIOH_CLK_DI()			(RCC->AHB1RSTR |= (0x1 << 7))
 
@@ -371,9 +397,9 @@ typedef struct{
  *
  * I2C CLOCK DISABLE MACROS
  ***********/
-#define I2C1_CLK_DI()			(RCC->APB1RSTR |= (0X1 << 21))
-#define I2C2_CLK_DI()			(RCC->APB1RSTR |= (0X1 << 22))
-#define I2C3_CLK_DI()			(RCC->APB1RSTR |= (0X1 << 23))
+#define I2C1_CLK_DI()					(RCC->APB1RSTR |= (0X1 << 21))
+#define I2C2_CLK_DI()				(RCC->APB1RSTR |= (0X1 << 22))
+#define I2C3_CLK_DI()				(RCC->APB1RSTR |= (0X1 << 23))
 
 
 
@@ -381,10 +407,10 @@ typedef struct{
  *
  * SPI CLOCK DISABLE MACROS
  ***********/
-#define SPI1_CLK_DI()			(RCC->APB2RSTR |= (0X1 << 12))
-#define SPI2_CLK_DI()			(RCC->APB1RSTR |= (0X1 << 14))
-#define SPI3_CLK_DI()			(RCC->APB1RSTR |= (0X1 << 15))
-#define SPI4_CLK_DI()			(RCC->APB2RSTR |= (0X1 << 13))
+#define SPI1_CLK_DI()				(RCC->APB2RSTR |= (0X1 << 12))
+#define SPI2_CLK_DI()				(RCC->APB1RSTR |= (0X1 << 14))
+#define SPI3_CLK_DI()				(RCC->APB1RSTR |= (0X1 << 15))
+#define SPI4_CLK_DI()				(RCC->APB2RSTR |= (0X1 << 13))
 
 
 
@@ -396,7 +422,7 @@ typedef struct{
 #define USART2_CLK_DI()			(RCC->APB1RSTR |= (0X1 << 17))
 #define USART3_CLK_DI()			(RCC->APB1RSTR |= (0X1 << 18))
 #define UART4_CLK_DI()			(RCC->APB1RSTR |= (0X1 << 19))
-#define UART5_CLK_DI()			(RCC->APB1RSTR |= (0X1 << 20))
+#define UART5_CLK_DI()				(RCC->APB1RSTR |= (0X1 << 20))
 #define USART6_CLK_DI()			(RCC->APB2RSTR |= (0X1 << 5))
 
 
@@ -413,14 +439,14 @@ typedef struct{
  *
  * GPIO CLOCK RESET MACROS
  ***********/
-#define GPIOA_REG_RESET()		do{ (RCC->AHB1RSTR |= (0x1 << 0)); (RCC->AHB1RSTR &= ~(0x1 << 0)); }while(0)
-#define GPIOB_REG_RESET()		do{ (RCC->AHB1RSTR |= (0x1 << 1)); (RCC->AHB1RSTR &= ~(0x1 << 0)); }while(0)
-#define GPIOC_REG_RESET()		do{ (RCC->AHB1RSTR |= (0x1 << 2)); (RCC->AHB1RSTR &= ~(0x1 << 0)); }while(0)
-#define GPIOD_REG_RESET()		do{ (RCC->AHB1RSTR |= (0x1 << 3)); (RCC->AHB1RSTR &= ~(0x1 << 0)); }while(0)
-#define GPIOE_REG_RESET()		do{ (RCC->AHB1RSTR |= (0x1 << 4)); (RCC->AHB1RSTR &= ~(0x1 << 0)); }while(0)
-#define GPIOF_REG_RESET()		do{ (RCC->AHB1RSTR |= (0x1 << 5)); (RCC->AHB1RSTR &= ~(0x1 << 0)); }while(0)
-#define GPIOG_REG_RESET()		do{ (RCC->AHB1RSTR |= (0x1 << 6)); (RCC->AHB1RSTR &= ~(0x1 << 0)); }while(0)
-#define GPIOH_REG_RESET()		do{ (RCC->AHB1RSTR |= (0x1 << 7)); (RCC->AHB1RSTR &= ~(0x1 << 0)); }while(0)
+#define GPIOA_REG_RESET()			do{ (RCC->AHB1RSTR |= (0x1 << 0)); (RCC->AHB1RSTR &= ~(0x1 << 0)); }while(0)
+#define GPIOB_REG_RESET()			do{ (RCC->AHB1RSTR |= (0x1 << 1)); (RCC->AHB1RSTR &= ~(0x1 << 0)); }while(0)
+#define GPIOC_REG_RESET()			do{ (RCC->AHB1RSTR |= (0x1 << 2)); (RCC->AHB1RSTR &= ~(0x1 << 0)); }while(0)
+#define GPIOD_REG_RESET()			do{ (RCC->AHB1RSTR |= (0x1 << 3)); (RCC->AHB1RSTR &= ~(0x1 << 0)); }while(0)
+#define GPIOE_REG_RESET()			do{ (RCC->AHB1RSTR |= (0x1 << 4)); (RCC->AHB1RSTR &= ~(0x1 << 0)); }while(0)
+#define GPIOF_REG_RESET()			do{ (RCC->AHB1RSTR |= (0x1 << 5)); (RCC->AHB1RSTR &= ~(0x1 << 0)); }while(0)
+#define GPIOG_REG_RESET()			do{ (RCC->AHB1RSTR |= (0x1 << 6)); (RCC->AHB1RSTR &= ~(0x1 << 0)); }while(0)
+#define GPIOH_REG_RESET()			do{ (RCC->AHB1RSTR |= (0x1 << 7)); (RCC->AHB1RSTR &= ~(0x1 << 0)); }while(0)
 
 
 
@@ -428,9 +454,9 @@ typedef struct{
  *
  * I2C CLOCK RESET MACROS
  ***********/
-#define I2C1_REG_RESET()		do{ (RCC->APB1RSTR |= (0x1 << 21)); (RCC->APB1RSTR &= ~(0x1 << 21)); }while(0);
-#define I2C2_REG_RESET()		do{ (RCC->APB1RSTR |= (0x1 << 22)); (RCC->APB1RSTR &= ~(0x1 << 22)); }while(0);
-#define I2C3_REG_RESET()		do{ (RCC->APB1RSTR |= (0x1 << 23)); (RCC->APB1RSTR &= ~(0x1 << 23)); }while(0);
+#define I2C1_REG_RESET()				do{ (RCC->APB1RSTR |= (0x1 << 21)); (RCC->APB1RSTR &= ~(0x1 << 21)); }while(0);
+#define I2C2_REG_RESET()				do{ (RCC->APB1RSTR |= (0x1 << 22)); (RCC->APB1RSTR &= ~(0x1 << 22)); }while(0);
+#define I2C3_REG_RESET()				do{ (RCC->APB1RSTR |= (0x1 << 23)); (RCC->APB1RSTR &= ~(0x1 << 23)); }while(0);
 
 
 
@@ -438,10 +464,10 @@ typedef struct{
  *
  * SPI CLOCK RESET MACROS
  ***********/
-#define SPI1_REG_RESET()		do{ (RCC->APB2RSTR |= (0x1 << 12)); (RCC->APB2RSTR &= ~(0x1 << 12)); }while(0);
-#define SPI2_REG_RESET()		do{ (RCC->APB1RSTR |= (0x1 << 14)); (RCC->APB2RSTR &= ~(0x1 << 12)); }while(0);
-#define SPI3_REG_RESET()		do{ (RCC->APB1RSTR |= (0x1 << 15)); (RCC->APB2RSTR &= ~(0x1 << 12)); }while(0);
-#define SPI4_REG_RESET()		do{ (RCC->APB2RSTR |= (0x1 << 13)); (RCC->APB2RSTR &= ~(0x1 << 12)); }while(0);
+#define SPI1_REG_RESET()				do{ (RCC->APB2RSTR |= (0x1 << 12)); (RCC->APB2RSTR &= ~(0x1 << 12)); }while(0);
+#define SPI2_REG_RESET()			do{ (RCC->APB1RSTR |= (0x1 << 14)); (RCC->APB2RSTR &= ~(0x1 << 12)); }while(0);
+#define SPI3_REG_RESET()			do{ (RCC->APB1RSTR |= (0x1 << 15)); (RCC->APB2RSTR &= ~(0x1 << 12)); }while(0);
+#define SPI4_REG_RESET()			do{ (RCC->APB2RSTR |= (0x1 << 13)); (RCC->APB2RSTR &= ~(0x1 << 12)); }while(0);
 
 
 
@@ -452,8 +478,8 @@ typedef struct{
 #define USART1_REG_RESET()		do{ (RCC->APB2RSTR |= (0x1 << 4)) ; ((RCC->APB2RSTR &= ~(0x1 << 4)); }while(0);
 #define USART2_REG_RESET()		do{ (RCC->APB1RSTR |= (0x1 << 17)); ((RCC->APB2RSTR &= ~(0x1 << 4)); }while(0);
 #define USART3_REG_RESET()		do{ (RCC->APB1RSTR |= (0x1 << 18)); ((RCC->APB2RSTR &= ~(0x1 << 4)); }while(0);
-#define UART4_REG_RESET()		do{	(RCC->APB1RSTR |= (0x1 << 19)); ((RCC->APB2RSTR &= ~(0x1 << 4)); }while(0);
-#define UART5_REG_RESET()		do{	(RCC->APB1RSTR |= (0x1 << 20)); ((RCC->APB2RSTR &= ~(0x1 << 4)); }while(0);
+#define UART4_REG_RESET()	  		do{	(RCC->APB1RSTR |= (0x1 << 19)); ((RCC->APB2RSTR &= ~(0x1 << 4)); }while(0);
+#define UART5_REG_RESET()			do{	(RCC->APB1RSTR |= (0x1 << 20)); ((RCC->APB2RSTR &= ~(0x1 << 4)); }while(0);
 #define USART6_REG_RESET()		do{	(RCC->APB2RSTR |= (0x1 << 5)) ; ((RCC->APB2RSTR &= ~(0x1 << 4)); }while(0);
 
 
@@ -462,6 +488,7 @@ typedef struct{
  * SYSCFG CLOCK RESET MACROS
  ***********/
 #define	SYSCFG_REG_RESET()		do{ (RCC->APB2RSTR |= (0x1 << 14)); (RCC->APB2RSTR &= ~(0x1 << 14)); }while(0);
+
 
 #define GPIO_BA_CODE(x)			((x == GPIOA) ? 0:\
 								(x == GPIOB) ? 1:\
@@ -474,6 +501,7 @@ typedef struct{
 /*
  * INTERRUPT REQUEST NUMBER (IRQ NUMBERS) OF THE MICROCONTROLLER
  */
+
 #define IRQ_NO_EXTI0			6
 #define IRQ_NO_EXTI1			7
 #define IRQ_NO_EXTI2			8
@@ -482,14 +510,19 @@ typedef struct{
 #define IRQ_NO_EXTI9_5			23
 #define IRQ_NO_EXTI15_10		40
 
+
+
 #define IRQ_NO_SPI1				35
 #define IRQ_NO_SPI2				36
 #define IRQ_NO_SPI3				51
 #define IRQ_NO_SPI4				84
 
+
+
 /************************************************************************************************************************************
- * 												 MACROS FOR SPI BIT DEFINITIONS														*
+ * 																		 MACROS FOR SPI BIT DEFINITIONS														   							*
  ************************************************************************************************************************************/
+
 
 #define SPI_CR1_CPHA				0
 #define SPI_CR1_CPOL				1
@@ -499,35 +532,109 @@ typedef struct{
 #define SPI_CR1_LSB					7
 #define SPI_CR1_SSI					8
 #define SPI_CR1_SSM					9
-#define SPI_CR1_RXONLY				10
+#define SPI_CR1_RXONLY			10
 #define SPI_CR1_DFF					11
-#define SPI_CR1_CRCNXT				12
+#define SPI_CR1_CRCNXT			12
 #define SPI_CR1_CRCEN				13
-#define SPI_CR1_BIDIOE				14
-#define SPI_CR1_BIDIMODE			15
+#define SPI_CR1_BIDIOE			14
+#define SPI_CR1_BIDIMODE		15
 
-#define SPI_CR2_RXDMAEN				0
-#define SPI_CR2_TXDMAEN				1
+
+
+#define SPI_CR2_RXDMAEN		0
+#define SPI_CR2_TXDMAEN		1
 #define SPI_CR2_SSOE				2
 #define SPI_CR2_FRF					4
 #define SPI_CR2_ERRIE				5
-#define SPI_CR2_RXNEIE				6
+#define SPI_CR2_RXNEIE			6
 #define SPI_CR2_TXEIE				7
+
+
 
 #define SPI_SR_RXNE					0
 #define SPI_SR_TXE					1
 #define SPI_SR_CHSIDE				2
 #define SPI_SR_UDR					3
 #define SPI_SR_CRCERR				4
-#define SPI_SR_MODF					5
+#define SPI_SR_MODF				5
 #define SPI_SR_OVR					6
 #define SPI_SR_BSY					7
 #define SPI_SR_FRE					8
 
 
 
+/************************************************************************************************************************************
+ *					 												 MACROS FOR I2C BIT DEFINITIONS																						*
+ ************************************************************************************************************************************/
+
+
+
+#define I2C_CR1_PE					0
+#define I2C_CR1_SMBUS				1
+#define I2C_CR1_SMBTYPE			3
+#define I2C_CR1_ENARP				4
+#define I2C_CR1_ENPEC				5
+#define I2C_CR1_ENGC				6
+#define I2C_CR1_NOSTRETCH	7
+#define I2C_CR1_START				8
+#define I2C_CR1_STOP				9
+#define I2C_CR1_ACK					10
+#define I2C_CR1_POS					11
+#define I2C_CR1_PEC					12
+#define I2C_CR1_ALERT				13
+#define I2C_CR1_SWRST				15
+
+
+
+#define I2C_CR2_FREQ				0
+#define I2C_CR2_ITERREN			8
+#define I2C_CR2_ITEVTEN			9
+#define I2C_CR2_ITBUFEN			10
+#define I2C_CR2_DMAEN			11
+#define I2C_CR2_LAST				12
+
+
+
+#define I2C_SR1_SB					0
+#define I2C_SR1_ADDR				1
+#define I2C_SR1_BTF					2
+#define I2C_SR1_ADD10				3
+#define I2C_SR1_STOPF				4
+#define I2C_SR1_RxNE				6
+#define I2C_SR1_TxE				    7
+#define I2C_SR1_BERR				8
+#define I2C_SR1_ARLO				9
+#define I2C_SR1_AF					10
+#define I2C_SR1_OVR					11
+#define I2C_SR1_PECERR			12
+#define I2C_SR1_TIMEOUT			14
+#define I2C_SR1_SMBALERT		15
+
+
+
+#define I2C_SR2_MSL					0
+#define I2C_SR2_BSY					1
+#define I2C_SR2_TRA					2
+#define I2C_SR2_GENCALL			4
+#define I2C_SR2_SMBDEFAULT	5
+#define I2C_SR2_SMBHOST		6
+#define I2C_SR2_DUALF				7
+#define I2C_SR2_PEC					8
+
+
+
+#define I2C_CCR_CCR					0
+#define I2C_CCR_DUTY				14
+#define I2C_CCR_FS					15
+
+
+
 #include"stm32f446xx_gpio.h"
 #include"stm32f446xx_spi.h"
 #include"stm32f446xx_rcc.h"
-#include "stm32f446xx_usart.h"
+#include"stm32f446xx_usart.h"
+#include"stm32f446xx_i2c.h"
+
+
+
 #endif /* INC_STM32F446XX_H_ */

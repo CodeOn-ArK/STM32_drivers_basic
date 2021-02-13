@@ -4,7 +4,7 @@
  *  Created on: 11-Jan-2021
  *      Author: KIIT
  */
-#if 1
+#if 0
 #include "stm32f446xx.h"
 #include "stm32f446xx_spi.h"
 #include "stm32f446xx_gpio.h"
@@ -121,10 +121,10 @@ int main()
 	uint8_t args[2];
 
 	GPIO_handle_t buttonPin;
-	buttonPin.pGPIOx = GPIOC;
+	buttonPin.pGPIOx = GPIOA;
 	buttonPin.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_IN;
-	buttonPin.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_13;
-	buttonPin.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
+	buttonPin.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_10;
+	buttonPin.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;
 	buttonPin.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
 	GPIO_Init(&buttonPin);
 
@@ -142,10 +142,10 @@ int main()
 	while(1)
 	{
 		//WAIT TILL BUTTON IS PRESSED
-		while( (GPIO_ReadIPin(GPIOC, GPIO_PIN_13)) );
+		while( (GPIO_ReadIPin(GPIOA, GPIO_PIN_10)) );
 
 		//DELAY TO COMPENSATE BUTTON DEBOUNCING
-		delay(3);
+		delay(5);
 
 		//ENABLE THE SPI2 PERIPHERAL
 		SPI_Enable(SPI2, ENABLE);
@@ -178,10 +178,10 @@ int main()
 		/* CMD <SENSOR READ> */
 
 		//WAIT TILL BUTTON IS PRESSED
-		while( (GPIO_ReadIPin(GPIOC, GPIO_PIN_13)) );
+	while( (GPIO_ReadIPin(GPIOA, GPIO_PIN_10)) );
 
 		//DELAY TO COMPENSATE BUTTON DEBOUNCING
-		delay(3);
+		delay(5);
 
 		CmndCode = COMMAND_SENSOR_READ;
 
@@ -224,10 +224,10 @@ int main()
 		 */
 
 		//WAIT TILL BUTTON IS PRESSED
-		while( (GPIO_ReadIPin(GPIOC, GPIO_PIN_13)) );
+	while( (GPIO_ReadIPin(GPIOA, GPIO_PIN_10)) );
 
 		//DELAY TO COMPENSATE BUTTON DEBOUNCING
-		delay(3);
+		delay(5);
 
 		CmndCode = COMMAND_LED_READ;
 
@@ -257,10 +257,10 @@ int main()
 		 */
 
 		//WAIT TILL BUTTON IS PRESSED
-		while( (GPIO_ReadIPin(GPIOC, GPIO_PIN_13)) );
+	while( (GPIO_ReadIPin(GPIOA, GPIO_PIN_10)) );
 
 		//DELAY TO COMPENSATE BUTTON DEBOUNCING
-		delay(3);
+		delay(5);
 
 		CmndCode = COMMAND_PRINT;
 
@@ -289,10 +289,10 @@ int main()
 		 * 5. COMMAND_ID_READ  <rec_ID>
 		 */
 		//WAIT TILL BUTTON IS PRESSED
-		while( (GPIO_ReadIPin(GPIOC, GPIO_PIN_13)) );
+	while( (GPIO_ReadIPin(GPIOA, GPIO_PIN_10)) );
 
 		//DELAY TO COMPENSATE BUTTON DEBOUNCING
-		delay(3);
+		delay(5);
 
 		CmndCode = COMMAND_ID_READ;
 

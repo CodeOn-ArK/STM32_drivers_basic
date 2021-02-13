@@ -19,25 +19,24 @@ int main()
 	ledPin.pGPIOx = GPIOA;
 	ledPin.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUT;
 	ledPin.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_5;
-	ledPin.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
+	ledPin.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_OD;
 	ledPin.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
 	ledPin.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
 
-	buttonPin.pGPIOx = GPIOB;
+	buttonPin.pGPIOx = GPIOA;
 	buttonPin.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_IN;
-	buttonPin.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_3;
+	buttonPin.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_10;
 	buttonPin.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;
 	buttonPin.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
 
 	GPIO_PeriClkCntrl(GPIOA, ENABLE);
-	GPIO_PeriClkCntrl(GPIOB, ENABLE);
 
 	GPIO_Init(&ledPin);
 	GPIO_Init(&buttonPin);
 
 	while(1)
 	{
-		if(!GPIO_ReadIPin(GPIOB, GPIO_PIN_3))
+		if(!GPIO_ReadIPin(GPIOA, GPIO_PIN_10))
 		{
 			delay(4);
 			GPIO_ToggleOPin(GPIOA, GPIO_PIN_5);

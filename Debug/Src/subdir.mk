@@ -11,7 +11,8 @@ C_SRCS += \
 ../Src/005spi_Tx_only.c \
 ../Src/006spi_TxOnly_ArduinoSlave.c \
 ../Src/007spi_cmd_handling.c \
-../Src/main.c \
+../Src/008I2C_master_Tx_test.c \
+../Src/009I2C_master_Rx_test.c \
 ../Src/syscalls.c \
 ../Src/sysmem.c 
 
@@ -23,7 +24,8 @@ OBJS += \
 ./Src/005spi_Tx_only.o \
 ./Src/006spi_TxOnly_ArduinoSlave.o \
 ./Src/007spi_cmd_handling.o \
-./Src/main.o \
+./Src/008I2C_master_Tx_test.o \
+./Src/009I2C_master_Rx_test.o \
 ./Src/syscalls.o \
 ./Src/sysmem.o 
 
@@ -35,7 +37,8 @@ C_DEPS += \
 ./Src/005spi_Tx_only.d \
 ./Src/006spi_TxOnly_ArduinoSlave.d \
 ./Src/007spi_cmd_handling.d \
-./Src/main.d \
+./Src/008I2C_master_Tx_test.d \
+./Src/009I2C_master_Rx_test.d \
 ./Src/syscalls.d \
 ./Src/sysmem.d 
 
@@ -55,8 +58,10 @@ Src/006spi_TxOnly_ArduinoSlave.o: ../Src/006spi_TxOnly_ArduinoSlave.c
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DSTM32 -DSTM32F4 -DSTM32F446RETx -DDEBUG -DNUCLEO_F446RE -c -I"/home/ark/st/working_space/stm32f446xx_drivers/drivers/src" -I../Inc -I"/home/ark/st/working_space/stm32f446xx_drivers/drivers/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Src/006spi_TxOnly_ArduinoSlave.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
 Src/007spi_cmd_handling.o: ../Src/007spi_cmd_handling.c
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DSTM32 -DSTM32F4 -DSTM32F446RETx -DDEBUG -DNUCLEO_F446RE -c -I"/home/ark/st/working_space/stm32f446xx_drivers/drivers/src" -I../Inc -I"/home/ark/st/working_space/stm32f446xx_drivers/drivers/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Src/007spi_cmd_handling.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Src/main.o: ../Src/main.c
-	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DSTM32 -DSTM32F4 -DSTM32F446RETx -DDEBUG -DNUCLEO_F446RE -c -I"/home/ark/st/working_space/stm32f446xx_drivers/drivers/src" -I../Inc -I"/home/ark/st/working_space/stm32f446xx_drivers/drivers/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Src/main.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
+Src/008I2C_master_Tx_test.o: ../Src/008I2C_master_Tx_test.c
+	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DSTM32 -DSTM32F4 -DSTM32F446RETx -DDEBUG -DNUCLEO_F446RE -c -I"/home/ark/st/working_space/stm32f446xx_drivers/drivers/src" -I../Inc -I"/home/ark/st/working_space/stm32f446xx_drivers/drivers/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Src/008I2C_master_Tx_test.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
+Src/009I2C_master_Rx_test.o: ../Src/009I2C_master_Rx_test.c
+	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DSTM32 -DSTM32F4 -DSTM32F446RETx -DDEBUG -DNUCLEO_F446RE -c -I"/home/ark/st/working_space/stm32f446xx_drivers/drivers/src" -I../Inc -I"/home/ark/st/working_space/stm32f446xx_drivers/drivers/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Src/009I2C_master_Rx_test.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
 Src/syscalls.o: ../Src/syscalls.c
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DSTM32 -DSTM32F4 -DSTM32F446RETx -DDEBUG -DNUCLEO_F446RE -c -I"/home/ark/st/working_space/stm32f446xx_drivers/drivers/src" -I../Inc -I"/home/ark/st/working_space/stm32f446xx_drivers/drivers/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Src/syscalls.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
 Src/sysmem.o: ../Src/sysmem.c

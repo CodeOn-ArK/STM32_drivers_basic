@@ -103,7 +103,7 @@ void USART_SetBaudRate(USART_RegDef_t *pUSARTx, uint32_t BaudRate)
   }else
   {
    //over sampling by 16
-	  usartdiv = ((25*PCLKx) / (2*BaudRate));
+	  usartdiv = ((25*PCLKx) / (4*BaudRate));
   }
 
   //Calculate the Mantissa part
@@ -136,7 +136,7 @@ void USART_SetBaudRate(USART_RegDef_t *pUSARTx, uint32_t BaudRate)
 }
 
 
-void USART_Enable(USART_RegDef_t *pUSARTx, uint8_t ENDI)
+void USART_EnableDisable(USART_RegDef_t *pUSARTx, uint8_t ENDI)
 {
 	if(ENDI == ENABLE)
 	{
@@ -150,11 +150,13 @@ void USART_Enable(USART_RegDef_t *pUSARTx, uint8_t ENDI)
 
 uint8_t USART_GetFlagStatus(USART_RegDef_t *pUSARTx, uint8_t StatusFlagName)
 {
-	if( ((pUSARTx->SR >> StatusFlagName) & 0x1) )
+	if( pUSARTx->SR & (0x1 << StatusFlagName) )
 		return FLAG_SET;
 
 	return FLAG_RESET;
 }
+
+
 void USART_ClearFlag(USART_RegDef_t *pUSARTx, uint16_t StatusFlagName)
 {
 
