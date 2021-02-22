@@ -27,6 +27,7 @@ int main()
 	buttonPin.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_IN;
 	buttonPin.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_10;
 	buttonPin.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;
+	buttonPin.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
 	buttonPin.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
 
 	GPIO_PeriClkCntrl(GPIOA, ENABLE);

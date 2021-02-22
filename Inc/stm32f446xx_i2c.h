@@ -17,6 +17,7 @@ typedef struct{
 	__vo uint8_t I2C_DeviceAddress	;							//CAN		BE 	ANYONE	OF	@I2C_DeviceAddress
 	__vo uint8_t I2C_ACKControl	;							//CAN		BE 	ANYONE	OF	@I2C_ACKControl
 	__vo uint8_t I2C_FMDutyCycle	;							//CAN		BE 	ANYONE	OF	@I2C_FMDutyCycle
+
 }I2C_Config_t;
 
 
@@ -28,6 +29,15 @@ typedef struct{
 	I2C_RegDef_t	*pI2Cx;
 	I2C_Config_t	I2C_Config;
 
+	uint8_t			*pTxBuffer;			// !<	  To store the app. Tx buffer address 	>
+	uint8_t			*pRxBuffer;			// !<	  To store the app. Rx buffer addr	>
+	uint32_t			TxLen;					// !<	  To store Tx Len	>
+	uint32_t			RxLen;					// !<	  To store Rx Len	>
+	uint8_t			TxRxState;			// !<	  To store communication state @I2C_application_state	>
+	uint8_t			DevAddr;				// !<	  To store Slave/device	addr	>
+	uint32_t			RxSize;					// !<	  To Store Rx size >
+	uint8_t			Sr	;						// !<	  To store Repeated start value	>
+
 }I2C_Handle_t;
 
 /************************************************************************************************************************************
@@ -38,9 +48,9 @@ typedef struct{
 /*
  * @I2C_SCLSpeed
  */
-#define I2C_SCL_SPEED_SM		0x186A0U
-#define I2C_SCL_SPEED_FM2K	0x30D40U
-#define I2C_SCL_SPEED_FM4K	0x61A80U
+#define I2C_SCL_SPEED_SM		0x186A0UL
+#define I2C_SCL_SPEED_FM2K	0x30D40UL
+#define I2C_SCL_SPEED_FM4K	0x61A80UL
 
 /*
  *@ I2C_DeviceAddress
@@ -60,6 +70,17 @@ typedef struct{
 #define  I2C_FM_DUTY_2				0
 #define  I2C_FM_DUTY_16_9			1
 
+/*
+ * @I2C_application_state
+ */
+#define	I2C_READY						0
+#define	I2C_BUSY_IN_Rx				1
+#define 	I2C_BUSY_IN_Tx				2
+
+
+/*
+ * Status register Flags
+ */
 
 #define I2C_FLAG_SR1_SB				0
 #define I2C_FLAG_SR1_ADDR			1
@@ -87,8 +108,25 @@ typedef struct{
 #define I2C_FLAG_SR2_DUALF		7
 #define I2C_FLAG_SR2_PEC			8
 
+/*
+ * I2C EVENT MACROS
+ */
 
+#define I2C_EV_Tx_COMPLETE		0
+#define I2C_EV_Rx_COMPLETE		1
+#define I2C_EV_STOP						2
 
+#define I2C_ERROR_BERR  			3
+#define I2C_ERROR_ARLO  			4
+#define I2C_ERROR_AF    				5
+#define I2C_ERROR_OVR   				6
+#define I2C_ERROR_TIMEOUT 		7
+
+#define I2C_EV_DATA_REQUEST	8
+#define I2C_EV_DATA_RECEIVE		9
+
+#define I2C_ENABLE_SR					0
+#define I2C_DISABLE_SR				1
 /************************************************************************************************************************************
  * 												APIS SUPPORTED BY THIS DRIVER																												*
  * 											FOR MORE INFO CHECK THE FUNCTION DESCP																								*
@@ -108,19 +146,33 @@ void I2C_Init(I2C_Handle_t *pI2CHandle);									//INITIALIZES I2C PORT
 void I2C_DeInit(I2C_RegDef_t *pI2Cx);										//DEINITIALIZES I2C PORT
 
 /*
- * DATA TRANSMIT / RECIEVE
+ *BLOCKING		 DATA TRANSMIT / Receive
  */
 
 void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTXBuffer, uint32_t Len, uint8_t SlaveAddr);
-void I2C_MasterRecieveData(I2C_Handle_t *pI2CHandle, uint8_t *pRXBuffer, uint32_t Len, uint8_t SlaveAddr);
+void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRXBuffer, uint32_t Len, uint8_t SlaveAddr);
 
+void I2C_SlaveSendData(I2C_RegDef_t *pI2Cx, uint8_t data );
+uint8_t I2C_SlaveReceiveData(I2C_RegDef_t *pI2Cx);
+/*
+ * INTERRUPT	DATA TRANSMIT / Receive
+ */
+
+uint8_t I2C_MasterSendDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pTXBuffer, uint32_t Len, uint8_t SlaveAddr, uint8_t Sr);
+uint8_t I2C_MasterReceiveDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pRXBuffer, uint32_t Len, uint8_t SlaveAddr, uint8_t Sr);
+
+void I2C_CloseSendData(I2C_Handle_t *pI2CHandle);
+void I2C_CloseReceiveData(I2C_Handle_t *pI2CHandle);
 /*
  * IRQ CONFIG && ISR HANDLING
  */
 
 
 void I2C_IRQ_ITConfig(uint8_t IRQNumber, uint8_t En_Di);					//CONFIGURES IRQ
-void I2C_IRQConfig(uint8_t IRQNumber,uint32_t IRQPriority);					// I2C PRIORITY HANDLER
+void I2C_IRQPriorityConfig(uint8_t IRQNumber,uint32_t IRQPriority);					// I2C PRIORITY HANDLER
+
+void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle);
+void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandle);
 
 /*
  * ADDN APIs
@@ -133,7 +185,10 @@ uint8_t I2C_GetFagStatus(I2C_RegDef_t *pI2Cx, uint32_t FlagName);
  */
 
 void I2C_AppEventCallback(I2C_Handle_t *, uint8_t);
+void I2C_SlaveEnDiCallBackEvents(I2C_RegDef_t *, uint8_t );
 
 
 
 #endif /* STM32F446XX_I2C_H_ */
+
+

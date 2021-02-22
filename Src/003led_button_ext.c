@@ -33,7 +33,6 @@ int main()
 	buttonPin.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
 
 	GPIO_PeriClkCntrl(GPIOA, ENABLE);
-	GPIO_PeriClkCntrl(GPIOC, ENABLE);
 
 	GPIO_Init(&ledPin);
 	GPIO_Init(&buttonPin);

@@ -55,7 +55,7 @@ main-build: stm32f446xx_drivers.elf secondary-outputs
 
 # Tool invocations
 stm32f446xx_drivers.elf: $(OBJS) $(USER_OBJS) /home/ark/st/working_space/stm32f446xx_drivers/STM32F446RETX_FLASH.ld
-	arm-none-eabi-gcc -o "stm32f446xx_drivers.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/ark/st/working_space/stm32f446xx_drivers/STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f446xx_drivers.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-gcc -o "stm32f446xx_drivers.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/ark/st/working_space/stm32f446xx_drivers/STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f446xx_drivers.map" -Wl,--gc-sections -static -specs=rdimon.specs -lc -lrdimon --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

@@ -5,7 +5,7 @@
  *      Author: ark
  */
 
-#if 1
+#if 0
 #include"stm32f446xx.h"
 #include"stm32f446xx_gpio.h"
 #include"stm32f446xx_i2c.h"
@@ -48,11 +48,11 @@ void I2C1_GPIOInits()
 	I2CPins.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;
 
 	//SDA
-	I2CPins.GPIO_PinConfig.GPIO_PinNumber  =  GPIO_PIN_9;
+	I2CPins.GPIO_PinConfig.GPIO_PinNumber  =  GPIO_PIN_3;
 	GPIO_Init(&I2CPins);
 
 	//SCL
-	I2CPins.GPIO_PinConfig.GPIO_PinNumber  =  GPIO_PIN_6;
+	I2CPins.GPIO_PinConfig.GPIO_PinNumber  =  GPIO_PIN_10;
 	GPIO_Init(&I2CPins);
 
 
@@ -62,7 +62,7 @@ void I2C1_GPIOInits()
 void I2C1_Inits()
 {
 
-	I2C1Handle.pI2Cx  = I2C1;
+	I2C1Handle.pI2Cx  = I2C2;
 	I2C1Handle.I2C_Config.I2C_ACKControl = I2C_ACK_EN;
 	I2C1Handle.I2C_Config.I2C_DeviceAddress  =  MASTERS_ADDRESS;
 	I2C1Handle.I2C_Config.I2C_FMDutyCycle = I2C_FM_DUTY_2;
@@ -106,7 +106,7 @@ int main()
 	//I2C peripheral config
 	I2C1_Inits();
 
-	I2C_Enable( I2C1 , ENABLE);
+	I2C_Enable( I2C2 , ENABLE);
 	while(1)
 	{
 		if( !GPIO_ReadIPin(GPIOA, GPIO_PIN_10) )

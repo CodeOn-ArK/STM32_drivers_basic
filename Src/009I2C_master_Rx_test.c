@@ -9,10 +9,9 @@
 #include"stm32f446xx.h"
 #include"stm32f446xx_gpio.h"
 #include"stm32f446xx_i2c.h"
-#include"string.h"
-#include"stdint.h"
 
-uint8_t *pRxBuffer, *head;
+#include<string.h>
+#include<stdint.h>
 
 /*
  * I2C peripheral initialization:
@@ -22,15 +21,16 @@ uint8_t *pRxBuffer, *head;
  *
  * AF: 4
  */
+
 void delay();
 void I2C1_GPIOInits();
 void I2C1_Inits();
 
 I2C_Handle_t I2C1Handle;
+uint8_t pRxBuffer[40];
+
 #define MASTERS_ADDRESS 	 0x38
 #define SLAVE_ADDR  0x68
-
-uint8_t data[] = "Testing I2C @#??";
 
 void delay()
 {
@@ -49,11 +49,11 @@ void I2C1_GPIOInits()
 	I2CPins.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;
 
 	//SCL
-	I2CPins.GPIO_PinConfig.GPIO_PinNumber  =  GPIO_PIN_6;
+	I2CPins.GPIO_PinConfig.GPIO_PinNumber  =  GPIO_PIN_10;
 	GPIO_Init(&I2CPins);
 
 	//SDA
-	I2CPins.GPIO_PinConfig.GPIO_PinNumber  =  GPIO_PIN_9;
+	I2CPins.GPIO_PinConfig.GPIO_PinNumber  =  GPIO_PIN_3;
 	GPIO_Init(&I2CPins);
 
 }
@@ -61,7 +61,7 @@ void I2C1_GPIOInits()
 void I2C1_Inits()
 {
 
-	I2C1Handle.pI2Cx  = I2C1;
+	I2C1Handle.pI2Cx  = I2C2;
 	I2C1Handle.I2C_Config.I2C_ACKControl = I2C_ACK_EN;
 	I2C1Handle.I2C_Config.I2C_DeviceAddress  =  MASTERS_ADDRESS;
 	I2C1Handle.I2C_Config.I2C_FMDutyCycle = I2C_FM_DUTY_2;
@@ -79,6 +79,7 @@ void GPIO_BtnLedInit(void)
 	GPIOBtn.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_10;
 	GPIOBtn.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_IN;
 	GPIOBtn.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;
+	GPIOBtn.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
 	GPIOBtn.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_MEDIUM;
 	GPIO_Init(&GPIOBtn);
 
@@ -86,9 +87,9 @@ void GPIO_BtnLedInit(void)
 	GPIOLed.pGPIOx = GPIOA;
 	GPIOLed.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_5;
 	GPIOLed.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUT;
+	GPIOLed.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
 	GPIOLed.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
 	GPIOLed.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_MEDIUM;
-
 	GPIO_Init(&GPIOLed);
 
 }
@@ -104,15 +105,27 @@ int main()
 	//I2C peripheral config
 	I2C1_Inits();
 
+	uint8_t cmnd_send, cmnd_read;
+
+	I2C_Init(&I2C1Handle);
+	I2C_Enable(I2C1Handle.pI2Cx, ENABLE);
+
 	while(1)
 	{
+		cmnd_send = (uint8_t)0x51;
+		cmnd_read = (uint8_t)0x52;
+
 		if( !GPIO_ReadIPin(GPIOA, GPIO_PIN_10) )
 		{
 			delay();
-			I2C_MasterSendData( &I2C1Handle, 0x51, 1,SLAVE_ADDR ); // Send Command to Arduino to instruct it to send the length of the information
+			I2C_MasterSendData( &I2C1Handle, &cmnd_send, 1,SLAVE_ADDR ); // Send Command to Arduino to instruct it to send the length of the information
 
-			head = pRxBuffer;
-			I2C_MasterRecieveData(&I2C1Handle, pRxBuffer, Len, SLAVE_ADDR); //Recieve Command from Arduino
+			I2C_MasterRecieveData(&I2C1Handle, pRxBuffer, 1, SLAVE_ADDR); //Recieve Command from Arduino
+
+			I2C_MasterSendData(&I2C1Handle, &cmnd_read, 1, SLAVE_ADDR);
+
+			I2C_MasterRecieveData(&I2C1Handle, pRxBuffer, I2C1Handle.RxSize, SLAVE_ADDR);
+
 		}
 	}
 }
