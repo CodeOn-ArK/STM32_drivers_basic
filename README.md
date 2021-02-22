@@ -39,5 +39,11 @@ specified directories. So had to change the file path to ../Inc.
 The application codes are kept at Src where the source codes are kept. These src codes test the 
 driver layer and interact with the user
 
+# Note to the Reader:
+
+->Any help or changes from your side is always a welcome from me.
+->I haven't used too much helper functions as it won't keep the essence of embedded i thought
+  Hence I have done bare register write/read without calling many functions for the same
+
 More updates coming soon 
 :wq!
