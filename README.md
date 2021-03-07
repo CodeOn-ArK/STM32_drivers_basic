@@ -20,9 +20,7 @@ you may port this to your own board with very minor changes.
 
 There are 3 folders of intrest to us here. Them being:
         
-            1}  INC
-            2}  Src
-            3}  drivers/inc
+            1}  drivers
 
 The central MCU specific header file contains in drivers/inc folder name being : "stm32f446xx.h"
 This is the core file and contains all the device specfic macros and structures.
