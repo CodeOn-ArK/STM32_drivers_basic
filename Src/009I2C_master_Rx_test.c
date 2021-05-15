@@ -120,11 +120,11 @@ int main()
 			delay();
 			I2C_MasterSendData( &I2C1Handle, &cmnd_send, 1,SLAVE_ADDR ); // Send Command to Arduino to instruct it to send the length of the information
 
-			I2C_MasterRecieveData(&I2C1Handle, pRxBuffer, 1, SLAVE_ADDR); //Recieve Command from Arduino
+			I2C_MasterReceiveData(&I2C1Handle, pRxBuffer, 1, SLAVE_ADDR); //Recieve Command from Arduino
 
 			I2C_MasterSendData(&I2C1Handle, &cmnd_read, 1, SLAVE_ADDR);
 
-			I2C_MasterRecieveData(&I2C1Handle, pRxBuffer, I2C1Handle.RxSize, SLAVE_ADDR);
+			I2C_MasterReceiveData(&I2C1Handle, pRxBuffer, I2C1Handle.RxSize, SLAVE_ADDR);
 
 		}
 	}

@@ -7,9 +7,8 @@
 
 
 #include"stm32f446xx.h"
-#include"stm32f446xx_usart.h"
-#include "stm32f446xx_rcc.h"
 
+extern USART_Handle_t usart2_handle;
 
 void USART_PeriClkCntrl(USART_RegDef_t *pUSARTx, uint8_t ENDI)
 {
@@ -136,18 +135,6 @@ void USART_SetBaudRate(USART_RegDef_t *pUSARTx, uint32_t BaudRate)
 }
 
 
-void USART_EnableDisable(USART_RegDef_t *pUSARTx, uint8_t ENDI)
-{
-	if(ENDI == ENABLE)
-	{
-		pUSARTx->CR1 |= ( 0x1 << USART_CR1_UE);
-	}else{
-		pUSARTx->CR1 &= ~( 0x1 << USART_CR1_UE);
-	}
-}
-
-
-
 uint8_t USART_GetFlagStatus(USART_RegDef_t *pUSARTx, uint8_t StatusFlagName)
 {
 	if( pUSARTx->SR & (0x1 << StatusFlagName) )
@@ -160,7 +147,7 @@ uint8_t USART_GetFlagStatus(USART_RegDef_t *pUSARTx, uint8_t StatusFlagName)
 void USART_ClearFlag(USART_RegDef_t *pUSARTx, uint16_t StatusFlagName)
 {
 
-	pUSARTx->SR |= (0x1 << StatusFlagName);
+	pUSARTx->SR &= ~(0x1 << StatusFlagName);
 }
 
 /*********************************************************************
@@ -186,7 +173,7 @@ void USART_Init(USART_Handle_t *pUSARTHandle)
 /******************************** Configuration of CR1******************************************/
 
 	//Implement the code to enable the Clock for given USART peripheral
-	 USART_PeriClkCntrl(pUSARTHandle->pUSARTx,  ENABLE);
+	 USART_PeriClkCntrl(pUSARTHandle->pUSARTx, ENABLE);
 
 	//Enable USART Tx and Rx engines according to the USART_Mode configuration item
 	if ( pUSARTHandle->USART_Config.USART_Mode == USART_MODE_ONLY_RX)
@@ -201,21 +188,20 @@ void USART_Init(USART_Handle_t *pUSARTHandle)
 	}else if (pUSARTHandle->USART_Config.USART_Mode == USART_MODE_TXRX)
 	{
 		//Implement the code to enable the both Transmitter and Receiver bit fields
-		tempreg |= ( ( 1 << USART_CR1_TE) | ( 1 << USART_CR1_RE) );
+		tempreg |= ( ( 1 << USART_CR1_RE) | ( 1 << USART_CR1_TE) );
 	}
 
     //Implement the code to configure the Word length configuration item
-	tempreg |=  pUSARTHandle->USART_Config.USART_WordLength  << USART_CR1_M;
+	tempreg |= pUSARTHandle->USART_Config.USART_WordLength << USART_CR1_M ;
 
 
     //Configuration of parity control bit fields
 	if ( pUSARTHandle->USART_Config.USART_ParityControl == USART_PARITY_EN_EVEN)
 	{
-		//Implement the code to enale the parity control
+		//Implement the code to enable the parity control
 		tempreg |= ( 1 << USART_CR1_PCE);
 
 		//Implement the code to enable EVEN parity
-		tempreg |= ( 0x1 << USART_PARITY_EN_EVEN);
 		//Not required because by default EVEN parity will be selected once you enable the parity control
 
 	}else if (pUSARTHandle->USART_Config.USART_ParityControl == USART_PARITY_EN_ODD )
@@ -224,7 +210,7 @@ void USART_Init(USART_Handle_t *pUSARTHandle)
 	    tempreg |= ( 1 << USART_CR1_PCE);
 
 	    //Implement the code to enable ODD parity
-	    tempreg |= ( 1 << USART_PARITY_EN_ODD);
+	    tempreg |= ( 1 << USART_CR1_PS);
 
 	}
 
@@ -255,12 +241,13 @@ void USART_Init(USART_Handle_t *pUSARTHandle)
 	}else if (pUSARTHandle->USART_Config.USART_HWFlowControl == USART_HW_FLOW_CTRL_RTS)
 	{
 		//Implement the code to enable RTS flow control
-		tempreg |= (0X1 << USART_CR3_RTSE);
+		tempreg |= ( 1 << USART_CR3_RTSE);
 
 	}else if (pUSARTHandle->USART_Config.USART_HWFlowControl == USART_HW_FLOW_CTRL_CTS_RTS)
 	{
 		//Implement the code to enable both CTS and RTS Flow control
-		tempreg |= ((0x1 << USART_CR3_CTSE) | (0x1 << USART_CR3_RTSE));
+		tempreg |= ( 1 << USART_CR3_CTSE);
+		tempreg |= ( 1 << USART_CR3_RTSE);
 	}
 
 
@@ -269,10 +256,37 @@ void USART_Init(USART_Handle_t *pUSARTHandle)
 /******************************** Configuration of BRR(Baudrate register)******************************************/
 
 	//Implement the code to configure the baud rate
-	USART_SetBaudRate(pUSARTHandle->pUSARTx, pUSARTHandle->USART_Config.USART_Baud);
+	//We will cover this in the lecture. No action required here
+	USART_SetBaudRate(pUSARTHandle->pUSARTx,pUSARTHandle->USART_Config.USART_Baud);
 
 }
 
+
+/*********************************************************************
+ * @fn      		  - USART_EnableOrDisable
+ *
+ * @brief             -
+ *
+ * @param[in]         -
+ * @param[in]         -
+ * @param[in]         -
+ *
+ * @return            -
+ *
+ * @Note              -
+
+ */
+void USART_PeripheralControl(USART_RegDef_t *pUSARTx, uint8_t Cmd)
+{
+	if(Cmd == ENABLE)
+	{
+		pUSARTx->CR1 |= (1 << USART_CR1_UE);
+	}else
+	{
+		pUSARTx->CR1 &= ~(1 << USART_CR1_UE);
+	}
+
+}
 
 
 /*********************************************************************
@@ -293,6 +307,8 @@ void USART_SendData(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer, uint32_t L
 {
 
 	uint16_t *pdata;
+
+
    //Loop over until "Len" number of bytes are transferred
 	for(uint32_t i = 0 ; i < Len; i++)
 	{
@@ -324,7 +340,7 @@ void USART_SendData(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer, uint32_t L
 		else
 		{
 			//This is 8bit data transfer
-			pUSARTHandle->pUSARTx->DR = (*pTxBuffer  & (uint8_t)0xFF);
+			pUSARTHandle->pUSARTx->DR = (*pTxBuffer  & 0xff);
 
 			//Implement the code to increment the buffer address
 			pTxBuffer++;
@@ -354,11 +370,15 @@ void USART_SendData(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer, uint32_t L
 void USART_ReceiveData(USART_Handle_t *pUSARTHandle, uint8_t *pRxBuffer, uint32_t Len)
 {
    //Loop over until "Len" number of bytes are transferred
-	for(uint32_t i = 0 ; i <  Len; i++)
+	uint8_t* head;
+	uint32_t i = 0;
+	for(i ; i <  (Len+1) ; i++)
 	{
 		//Implement the code to wait until RXNE flag is set in the SR
-		while( USART_GetFlagStatus(pUSARTHandle->pUSARTx,  USART_SR_RXNE));
+		while(! USART_GetFlagStatus(pUSARTHandle->pUSARTx,  USART_SR_RXNE));
 
+		if(pUSARTHandle->pUSARTx->DR == '\n' || pUSARTHandle->pUSARTx->DR == '\r')
+			continue;
 		//Check the USART_WordLength to decide whether we are going to receive 9bit of data in a frame or 8 bit
 		if(pUSARTHandle->USART_Config.USART_WordLength == USART_WORDLEN_9BITS)
 		{
@@ -409,6 +429,9 @@ void USART_ReceiveData(USART_Handle_t *pUSARTHandle, uint8_t *pRxBuffer, uint32_
 		}
 	}
 
+	if(i == (Len + 1))pRxBuffer = head;
+
+	(void)head;
 }
 
 /*********************************************************************

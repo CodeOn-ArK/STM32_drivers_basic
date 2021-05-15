@@ -6,8 +6,6 @@
  */
 #if 0
 #include "stm32f446xx.h"
-#include "stm32f446xx_spi.h"
-#include "stm32f446xx_gpio.h"
 #include <string.h>
 
 /*

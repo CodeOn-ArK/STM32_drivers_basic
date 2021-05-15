@@ -9,19 +9,51 @@
 #include<stdint.h>
 #include<stdio.h>
 
+/*
+ * Global variable definitions starting here
+ */
 uint32_t AHB1P[]  = {2, 4, 8, 16, 64, 128, 256, 512};
 uint32_t APB1p[]  =  {2, 4, 8, 16};
 
+/*
+ * exported variable
+ */
 extern uint8_t cmnd_code;
 
-#define READ 		1
+/*
+ * private Macros
+ */
+#define READ 	1
 #define WRITE	0
 
+/*
+ * Private function starting here
+ */
 static void I2C_ClearADDRFlag(I2C_Handle_t *pI2CHandle);
 static void I2C_GenerateStartCondition(I2C_RegDef_t *);
 static void I2C_ExecuteAddrPhase(I2C_RegDef_t *pI2Cx, uint8_t SlaveAddr, uint8_t);
+
+/*
+ * Global function starting here
+ */
 void I2C_CallBack();
 
+/******************************************************************************************
+ * 							Code Implementation starts here
+ ******************************************************************************************/
+
+/*********************************************************************
+ * @fn      		  - static void I2C_ClearADDRFlag(I2C_Handle_t *pI2CHandle )
+ *
+ * @brief             - Clears the ADDR FLAG of the SR2 reg of the corresponding I2C peripheral
+ *
+ * @param[in]         -	I2C_Handle_t *pI2CHandle
+ *
+ * @return            - void
+ *
+ * @Note              - private function
+
+ */
 static void I2C_ClearADDRFlag(I2C_Handle_t *pI2CHandle )
 {
 	uint32_t dummy_read;
@@ -65,11 +97,38 @@ static void I2C_ClearADDRFlag(I2C_Handle_t *pI2CHandle )
 
 }
 
+/*********************************************************************
+ * @fn      		  - static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx)
+ *
+ * @brief             - Generates START condition at the corresponding I2C peripheral pI2Cx
+ *
+ * @param[in]         - I2C_RegDef_t *pI2Cx
+ *
+ * @return            - void
+ *
+ * @Note              - private function
+
+ */
 static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx)
 {
 	pI2Cx->CR1 |= (0x1 << I2C_CR1_START);
 }
 
+/*********************************************************************
+ * @fn      		  - static void I2C_ExecuteAddrPhase(I2C_RegDef_t *pI2Cx, uint8_t SlaveAddr, uint8_t mode)
+ *
+ * @brief             - Sends out the address on the data line(SDA) along with the
+ * 						given mode(R/W') at the corresponding peripheral
+ *
+ * @param[in]         - I2C_RegDef_t *pI2Cx
+ * @param[in]         - uint8_t SlaveAddr
+ * @param[in]         - uint8_t mode
+ *
+ * @return            - void
+ *
+ * @Note              - private function
+
+ */
 static void I2C_ExecuteAddrPhase(I2C_RegDef_t *pI2Cx, uint8_t SlaveAddr, uint8_t mode)
 {
 	if(mode == WRITE)
@@ -84,20 +143,18 @@ static void I2C_ExecuteAddrPhase(I2C_RegDef_t *pI2Cx, uint8_t SlaveAddr, uint8_t
 }
 
 /*********************************************************************
- * @fn      		  - I2C_MasterSendDataIT
+ * @fn      		  - void I2C_Enable(I2C_RegDef_t *pI2Cx , uint8_t EN_DI)
  *
- * @brief             -
+ * @brief             - Enables the I2C peripheral pI2Cx
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - I2C_RegDef_t *pI2Cx
+ * @param[in]         - uint8_t EN_DI
  *
- * @return            -
+ * @return            - void
  *
- * @Note              -
+ * @Note              - NULL
 
  */
-
 void I2C_Enable(I2C_RegDef_t *pI2Cx , uint8_t EN_DI)
 {
 	if(EN_DI == ENABLE)
@@ -109,20 +166,19 @@ void I2C_Enable(I2C_RegDef_t *pI2Cx , uint8_t EN_DI)
 
 
 /*********************************************************************
- * @fn      		  - I2C_MasterSendDataIT
+ * @fn      		  - uint8_t I2C_GetFagStatus(I2C_RegDef_t *pI2Cx, uint32_t FlagName)
  *
- * @brief             -
+ * @brief             - Returns the flag status of the corresponding flag register in SR1 of the
+ * 						corresponding I2C peripheral
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - I2C_RegDef_t *pI2Cx
+ * @param[in]         - uint32_t FlagName
  *
- * @return            -
+ * @return            - uint8_t
  *
- * @Note              -
+ * @Note              - NULL
 
  */
-
 uint8_t I2C_GetFagStatus(I2C_RegDef_t *pI2Cx, uint32_t FlagName)
 {
 	if(pI2Cx->SR1 & (0x1 << FlagName) )
@@ -131,6 +187,18 @@ uint8_t I2C_GetFagStatus(I2C_RegDef_t *pI2Cx, uint32_t FlagName)
 	return FLAG_RESET;
 }
 
+/*********************************************************************
+ * @fn      		  - uint32_t RCC_GetClkVal(void)
+ *
+ * @brief             - Returns the clock value of APB1 bus
+ *
+ * @param[in]         - void
+ *
+ * @return            - uint32_t
+ *
+ * @Note              - NULL
+
+ */
 uint32_t RCC_GetClkVal(void)
 {
 	uint32_t PCLK1, Clk_SCL, temp;
@@ -182,20 +250,18 @@ uint32_t RCC_GetClkVal(void)
 
 
 /*********************************************************************
- * @fn      		  - I2C_MasterSendDataIT
+ * @fn      		  - void I2C_PeriClkCntrl(I2C_RegDef_t *pI2Cx, uint8_t En_Di)
  *
- * @brief             -
+ * @brief             - Enables/Disables the corresponding I2C peripheral pI2Cx
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - I2C_RegDef_t *pI2Cx
+ * @param[in]         - uint8_t En_Di
  *
- * @return            -
+ * @return            - void
  *
- * @Note              -
+ * @Note              - NULL
 
  */
-
 void I2C_PeriClkCntrl(I2C_RegDef_t *pI2Cx, uint8_t En_Di)
 {
 	if(En_Di  ==	 ENABLE)
@@ -226,20 +292,17 @@ void I2C_PeriClkCntrl(I2C_RegDef_t *pI2Cx, uint8_t En_Di)
 }
 
 /*********************************************************************
- * @fn      		  - I2C_MasterSendDataIT
+ * @fn      		  - void I2C_Init(I2C_Handle_t *pI2CHandle)
  *
- * @brief             -
+ * @brief             - Initializes the corresponding I2C port ,in pI2CHandle, according to the structure pI2CHandle
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - I2C_Handle_t *pI2CHandle
  *
- * @return            -|
+ * @return            - void
  *
- * @Note              -
+ * @Note              - NULL
 
  */
-
 void I2C_Init(I2C_Handle_t *pI2CHandle)				//INITIALIZES I2C PORT
 {
 	uint32_t tempreg = 0;
@@ -347,20 +410,17 @@ void I2C_Init(I2C_Handle_t *pI2CHandle)				//INITIALIZES I2C PORT
 
 
 /*********************************************************************
- * @fn      		  - I2C_MasterSendDataIT
+ * @fn      		  - void I2C_DeInit(I2C_RegDef_t *pI2Cx)
  *
- * @brief             -
+ * @brief             - DeInitializes the I2C port
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - I2C_RegDef_t *pI2Cx
  *
- * @return            -
+ * @return            - void
  *
- * @Note              -
+ * @Note              - NULL
 
  */
-
 void I2C_DeInit(I2C_RegDef_t *pI2Cx)										//DEINITIALIZES I2C PORT
 {
 	if(pI2Cx == I2C1)
@@ -379,20 +439,20 @@ void I2C_DeInit(I2C_RegDef_t *pI2Cx)										//DEINITIALIZES I2C PORT
 }
 
 /*********************************************************************
- * @fn      		  - I2C_MasterSendDataIT
+ * @fn      		  - void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTXBuffer, uint32_t Len, uint8_t SlaveAddr)
  *
- * @brief             -
+ * @brief             - Sends data of the specified length through the specified I2C port to the specified slaveaddress
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - I2C_Handle_t *pI2CHandle
+ * @param[in]         - uint8_t *pTXBuffer
+ * @param[in]         - uint32_t Len
+ * @param[in]         - uint8_t SlaveAddr *
  *
- * @return            -
+ * @return            - void
  *
- * @Note              -
+ * @Note              - NULL
 
  */
-
 void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTXBuffer, uint32_t Len, uint8_t SlaveAddr)
 {
 
@@ -441,20 +501,20 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTXBuffer, uint32_t L
 }
 
 /*********************************************************************
- * @fn      		  - I2C_MasterSendDataIT
+ * @fn      		  - void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRXBuffer, uint32_t Len, uint8_t SlaveAddr)
  *
- * @brief             -
+ * @brief             - Receives data of the specified length over the given I2C peripheral from the mentioned SlaveAddr
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - I2C_Handle_t *pI2CHandle
+ * @param[in]         - uint8_t *pRXBuffer
+ * @param[in]         - uint32_t Len
+ * @param[in]         - uint8_t SlaveAddr
  *
- * @return            -
+ * @return            - void
  *
- * @Note              -
+ * @Note              - NULL
 
  */
-
 void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRXBuffer, uint32_t Len, uint8_t SlaveAddr)
 {
 	uint32_t tempreg;
@@ -536,17 +596,19 @@ void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRXBuffer, uint32_
 
 
 /*********************************************************************
- * @fn      		  - I2C_MasterReceiveDataIT
+ * @fn      		  -  uint8_t I2C_MasterReceiveDataIT(I2C_Handle_t *pI2CHandle,uint8_t *pRxBuffer, uint32_t Len, uint8_t SlaveAddr,uint8_t Sr)
  *
- * @brief             -
+ * @brief             - Interrupt based Reception from the given SlaveAddr over the given I2C peripheral
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - I2C_Handle_t *pI2CHandle
+ * @param[in]         - uint8_t *pRxBuffer
+ * @param[in]         - uint32_t Len
+ * @param[in]         - uint8_t SlaveAddr
+ * @param[in]         - uint8_t Sr
  *
- * @return            -
+ * @return            - uint8_t (success status @I2C_application_state)
  *
- * @Note              -
+ * @Note              - You can enable/disable repeated start using the Sr field
 
  */
 uint8_t I2C_MasterReceiveDataIT(I2C_Handle_t *pI2CHandle,uint8_t *pRxBuffer, uint32_t Len, uint8_t SlaveAddr,uint8_t Sr)
@@ -580,17 +642,19 @@ uint8_t I2C_MasterReceiveDataIT(I2C_Handle_t *pI2CHandle,uint8_t *pRxBuffer, uin
 }
 
 /*********************************************************************
- * @fn      		  - I2C_MasterSendDataIT
+ * @fn      		  - uint8_t  I2C_MasterSendDataIT(I2C_Handle_t *pI2CHandle,uint8_t *pTxBuffer, uint32_t Len,uint8_t SlaveAddr,uint8_t Sr)
  *
- * @brief             -
+ * @brief             - Interrupt based Transmission to the given SlaveAddr over the given I2C peripheral
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - I2C_Handle_t *pI2CHandle
+ * @param[in]         - uint8_t *pTxBuffer
+ * @param[in]         - uint32_t Len
+ * @param[in]         - uint8_t SlaveAddr
+ * @param[in]         - uint8_t Sr
  *
- * @return            -
+ * @return            - uint8_t (success status @I2C_application_state)
  *
- * @Note              -
+ * @Note              - You can enable/disable Repeated Start using the Sr field
 
  */
 uint8_t  I2C_MasterSendDataIT(I2C_Handle_t *pI2CHandle,uint8_t *pTxBuffer, uint32_t Len,uint8_t SlaveAddr,uint8_t Sr)
@@ -628,21 +692,19 @@ uint8_t  I2C_MasterSendDataIT(I2C_Handle_t *pI2CHandle,uint8_t *pTxBuffer, uint3
 
 
 /*********************************************************************
- * @fn      		  - I2C_MasterSendDataIT
+ * @fn      		  - void I2C_IRQ_ITConfig(uint8_t IRQNumber, uint8_t En_Di)
  *
- * @brief             -
+ * @brief             - Enables/Disables the IRQ Reception line of the given irqnumber
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - uint8_t irqnumber
+ * @param[in]         - uint8_t en_di
  *
- * @return            -
+ * @return            - void
  *
- * @Note              -
+ * @Note              - Use it only for I2C peripheral
 
  */
-
-void I2C_IRQ_ITConfig(uint8_t IRQNumber, uint8_t En_Di)					//CONFIGURES IRQ
+void I2C_IRQ_ITConfig(uint8_t irqnumber, uint8_t en_di)					//CONFIGURES IRQ
 {
 
 	if(En_Di == ENABLE)
@@ -680,21 +742,18 @@ void I2C_IRQ_ITConfig(uint8_t IRQNumber, uint8_t En_Di)					//CONFIGURES IRQ
 
 
 /*********************************************************************
- * @fn      		  - I2C_MasterSendDataIT
+ * @fn      		  - void I2C_IRQPriorityConfig(uint8_t IRQNumber,uint32_t IRQPriority)
  *
- * @brief             -
+ * @brief             - configures the priority of the given IRQNumber
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - uint8_t IRQNumber
+ * @param[in]         - uint32_t IRQPriority
  *
- * @return            -
+ * @return            - void
  *
- * @Note              -
+ * @Note              - Use only for I2C peripheral
 
  */
-
-
 void I2C_IRQPriorityConfig(uint8_t IRQNumber,uint32_t IRQPriority)					// I2C PRIORITY HANDLER
 {
 
@@ -708,32 +767,57 @@ void I2C_IRQPriorityConfig(uint8_t IRQNumber,uint32_t IRQPriority)					// I2C PR
 
 
 /*********************************************************************
- * @fn      		  - I2C_MasterSendDataIT
+ * @fn      		  - void I2C_SlaveSendData(I2C_RegDef_t *pI2Cx, uint8_t data )
  *
- * @brief             -
+ * @brief             - Sends the given data over the specified pI2Cx peripheral in slave mode
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - I2C_RegDef_t *pI2Cx
+ * @param[in]         - uint8_t data
  *
- * @return            -
+ * @return            - void
  *
- * @Note              -
+ * @Note              - NULL
 
  */
 void I2C_SlaveSendData(I2C_RegDef_t *pI2Cx, uint8_t data )
 {
 	pI2Cx->DR = data;
 }
+
+/*********************************************************************
+ * @fn      		  - uint8_t I2C_SlaveReceiveData(I2C_RegDef_t *pI2Cx)
+ *
+ * @brief             - Receives the data over the specified pI2Cx peripheral in slave mode
+ *
+ * @param[in]         - I2C_RegDef_t *pI2Cx
+ *
+ * @return            - uint8_t(the data received)
+ *
+ * @Note              - NULL
+
+ */
 uint8_t I2C_SlaveReceiveData(I2C_RegDef_t *pI2Cx)
 {
 	return (uint8_t)pI2Cx->DR;
 }
 
+/*********************************************************************
+ * @fn      		  - void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle)
+ *
+ * @brief             - Event Handler for the given I2C peripheral for both slave and master modes
+ *
+ * @param[in]         - I2C_Handle_t *pI2CHandle
+ *
+ * @return            - void
+ *
+ * @Note              - NULL
+
+ */
 void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle)
 {
 
 	uint32_t temp1, temp2, temp3;
+
 	//Interrupt handling for both master and slave mode of a device
 	temp1 = pI2CHandle->pI2Cx->CR2 & (0x1 << I2C_CR2_ITEVTEN);
 	temp2   = pI2CHandle->pI2Cx->CR2 & (0x1 << I2C_CR2_ITBUFEN);
@@ -925,21 +1009,18 @@ void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle)
 }
 
 /*********************************************************************
- * @fn      		  - I2C_MasterSendDataIT
+ * @fn      		  - void I2C_CloseReceiveData(I2C_Handle_t *pI2CHandle)
  *
- * @brief             -
+ * @brief             - Closes the communication with the device communicating at the given
+ * 						I2C peripheral
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - I2C_Handle_t *pI2CHandle
  *
- * @return            -
+ * @return            - void
  *
- * @Note              -
+ * @Note              - Used in both Slave && Master modes
 
  */
-
-
 void I2C_CloseReceiveData(I2C_Handle_t *pI2CHandle)
 {
 	//Implement the code to disable ITBUFEN Control Bit
@@ -960,21 +1041,18 @@ void I2C_CloseReceiveData(I2C_Handle_t *pI2CHandle)
 }
 
 /*********************************************************************
- * @fn      		  - I2C_MasterSendDataIT
+ * @fn      		  - void I2C_CloseSendData(I2C_Handle_t *pI2CHandle)
  *
- * @brief             -
+ * @brief             - Closes the communication with the device communicating at the given
+ * 						I2C peripheral
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - I2C_Handle_t *pI2CHandle
  *
- * @return            -
+ * @return            - void
  *
- * @Note              -
+ * @Note              - Used in both Slave && Master modes
 
  */
-
-
 void I2C_CloseSendData(I2C_Handle_t *pI2CHandle)
 {
 	//Implement the code to disable ITBUFEN Control Bit
@@ -995,20 +1073,18 @@ void I2C_CloseSendData(I2C_Handle_t *pI2CHandle)
 }
 
 /*********************************************************************
- * @fn      		  - I2C_ER_IRQHandling
+ * @fn      		  - void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandle)
  *
- * @brief             -
+ * @brief             - Error IRQ handler
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - I2C_Handle_t *pI2CHandle
  *
- * @return            -
+ * @return            - void
  *
- * @Note              -
+ * @Note              - Calls appropriate Callback( I2C_AppEventCallbac() ) to the the USER application
+ * 						Informing about the necessary errors/events
 
  */
-
 void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandle)
 {
 
@@ -1088,20 +1164,18 @@ void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandle)
 
 
 /*********************************************************************
- * @fn      		  - I2C_MasterSendDataIT
+ * @fn      		  - void I2C_SlaveEnDiCallBackEvents(I2C_RegDef_t *pI2Cx, uint8_t ENDI)
  *
- * @brief             -
+ * @brief             - Enables/Disables Error/Event callback to the USER application when in Slave mode
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - I2C_RegDef_t *pI2Cx
+ * @param[in]         - uint8_t ENDI
  *
- * @return            -
+ * @return            - void
  *
- * @Note              -
+ * @Note              - NULL
 
  */
-
 void I2C_SlaveEnDiCallBackEvents(I2C_RegDef_t *pI2Cx, uint8_t ENDI)
 {
 	if(ENDI == ENABLE)
@@ -1121,6 +1195,19 @@ void I2C_SlaveEnDiCallBackEvents(I2C_RegDef_t *pI2Cx, uint8_t ENDI)
 	}
 }
 
+/*********************************************************************
+ * @fn      		  - __weak void I2C_AppEventCallback(I2C_Handle_t *pI2CHandle, uint8_t I2C_Event)
+ *
+ * @brief             - This is weak implementation of the callback function; Do not delete this:
+ * 						Copy the function to USER code and remove the __weak attribute
+ *
+ * @param[in]         - I2C_Handle_t *pI2CHandle, uint8_t I2C_Event
+ *
+ * @return            - void
+ *
+ * @Note              - DO NOT REMOVE THIS FROM HERE
+
+ */
 __weak void I2C_AppEventCallback(I2C_Handle_t *pI2CHandle, uint8_t I2C_Event)
 {
 

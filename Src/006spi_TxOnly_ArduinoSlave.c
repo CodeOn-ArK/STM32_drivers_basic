@@ -70,7 +70,7 @@ void SPI2_Inits()
 
 int main()
 {
-	char user_data[] = "Hello World How are i am fine thank you *  9* 7 6( 987 6 89&*^&%7* ^78 765 9 678 576%89 7789 ^576 57 78 ^76576%9&* 78 678 608&(S^9847239857 *& ^75 786 78 %76578^0*( ^78%^7 %89 &69*^078 6 you";
+	uint8_t user_data = 0x1;
 
 	GPIO_handle_t buttonPin;
 	buttonPin.pGPIOx = GPIOC;
@@ -93,7 +93,7 @@ int main()
 		if( !GPIO_ReadIPin(	GPIOC, GPIO_PIN_13) )
 		{
 			for(int i =0; i < 300000; i++);
-			SPI_SendData(SPI2, (uint8_t *)user_data, sizeof(user_data));
+			SPI_SendData(SPI2, &user_data, sizeof(user_data));
 
 			//CONFIRM SPI IS NOT BUSY
 			while(SPI_GetFagStatus(SPI2, SPI_SR_BSY) != FLAG_RESET);

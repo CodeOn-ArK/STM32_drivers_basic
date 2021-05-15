@@ -136,21 +136,22 @@ int main()
 		if( !GPIO_ReadIPin(GPIOA, GPIO_PIN_10) )
 		{
 			delay();
+
 			while(I2C_MasterSendDataIT( &I2C2Handle, &cmnd_send, 1,SLAVE_ADDR , I2C_DISABLE_SR) != I2C_READY); // Send Command to Arduino to instruct it to send the length of the information
-
 			printf("1st MSD\n");
+
 			while(I2C_MasterReceiveDataIT(&I2C2Handle, pRxBuffer, 1, SLAVE_ADDR, I2C_DISABLE_SR) != I2C_READY); //Receive Command from Arduino
-
 			printf("1st MRD\n");
+
 			while(I2C_MasterSendDataIT(&I2C2Handle, &cmnd_read, 1, SLAVE_ADDR, I2C_DISABLE_SR) != I2C_READY);
-
 			printf("2nd MSD\n");
+
 			while(I2C_MasterReceiveDataIT(&I2C2Handle, pRxBuffer, I2C2Handle.RxSize, SLAVE_ADDR, I2C_DISABLE_SR) != I2C_READY);
-
 			printf("2nd MRD\n");
-			delay();
 
+			delay();
 			printf("Data : \t%s\n", pRxBuffer);
+
 		}
 	}
 }

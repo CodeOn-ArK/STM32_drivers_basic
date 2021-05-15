@@ -11,6 +11,19 @@ static void SPI_RXNE_IT_Handle(SPI_Handle_t *pSPIHandle);
 static void SPI_TXE_IT_Handle(SPI_Handle_t *pSPIHandle);
 static void SPI_OVR_IT_Handle(SPI_Handle_t *pSPIHandle);
 
+/********************************************************************************
+ * 							DOCUMENTATION
+ * @fn		: uint8_t SPI_GetFagStatus(SPI_RegDef_t *pSPIx, uint32_t FlagName)
+ *
+ * @brief	: returns status of the respective register flag
+ *
+ * @param	: SPI_RegDef_t *pSPIx
+ * @param	: uint32_t FlagName
+ *
+ * @return  : uint8_t
+ *
+ * @Note	:
+ */
 uint8_t SPI_GetFagStatus(SPI_RegDef_t *pSPIx, uint32_t FlagName)
 {
 	if(pSPIx->SR & FlagName)
@@ -20,6 +33,20 @@ uint8_t SPI_GetFagStatus(SPI_RegDef_t *pSPIx, uint32_t FlagName)
 	return FLAG_RESET;
 }
 
+/********************************************************************************
+ * 							DOCUMENTATION
+ *
+ * @fn		: void SPI_Enable(SPI_RegDef_t *SPI_ENDI, uint8_t EN_DI)
+ *
+ * @brief	: enables/disables the respective SPI peripheral
+ *
+ * @param	: SPI_RegDef_t *SPI_ENDI
+ * @param	: uint8_t EN_DI
+ *
+ * @return  : void
+ *
+ * @Note	: NULL
+ */
 void SPI_Enable(SPI_RegDef_t *SPI_ENDI, uint8_t EN_DI)
 {
 	if(EN_DI == ENABLE)
@@ -31,6 +58,20 @@ void SPI_Enable(SPI_RegDef_t *SPI_ENDI, uint8_t EN_DI)
 	}
 }
 
+/********************************************************************************
+ * 							DOCUMENTATION
+ *
+ * @fn		: void SSI_Config(SPI_RegDef_t *SPI_ENDI, uint8_t EN_DI)
+ *
+ * @brief	: This enables/disables the Software Slave Management
+ *
+ * @param	: SPI_RegDef_t *SPI_ENDI
+ * @param	: uint8_t EN_DI
+ *
+ * @return  : void
+ *
+ * @Note	: This feature allows automatic management of the CS pin
+ */
 void SSI_Config(SPI_RegDef_t *SPI_ENDI, uint8_t EN_DI)
 {
 	//SSI INITS -- THIS MAKES NSS PIN HIGH  AND PREVENTS MODF ERR -- NOT REQD FOR H/W SLAVE MANAGEMENT
@@ -45,6 +86,20 @@ void SSI_Config(SPI_RegDef_t *SPI_ENDI, uint8_t EN_DI)
 
 }
 
+/********************************************************************************
+ * 							DOCUMENTATION
+ *
+ * @fn		: void SSOE_Config(SPI_RegDef_t *SPI_ENDI, uint8_t EN_DI)
+ *
+ * @brief	: Enables/Disables Software Slave Output Enable
+ *
+ * @param	: SPI_RegDef_t *SPI_ENDI
+ * @param	: uint8_t EN_DI
+ *
+ * @return  : void
+ *
+ * @Note	: This needs to be enabled to use SSI feature
+ */
 void SSOE_Config(SPI_RegDef_t *SPI_ENDI, uint8_t EN_DI)
 {
 
@@ -56,19 +111,20 @@ void SSOE_Config(SPI_RegDef_t *SPI_ENDI, uint8_t EN_DI)
 		SPI_ENDI->CR2 &= ~(0x1 << SSOEEN);
 	}
 }
+
 /********************************************************************************
  * 							DOCUMENTATION
- * @fn		:
  *
- * @brief	:
+ * @fn		: void SPI_PeriClkCntrl(SPI_RegDef_t *pSPIx, uint8_t En_Di)
  *
- * @param	:
- * @param	:
- * @param	:
+ * @brief	: Enables/Disables the SPI peripheral clock
  *
- * @return  :
+ * @param	: SPI_RegDef_t *pSPIx
+ * @param	: uint8_t En_Di
  *
- * @Note	:
+ * @return  : void
+ *
+ * @Note	: NULL
  */
 void SPI_PeriClkCntrl(SPI_RegDef_t *pSPIx, uint8_t En_Di)
 {
@@ -118,17 +174,16 @@ void SPI_PeriClkCntrl(SPI_RegDef_t *pSPIx, uint8_t En_Di)
 
 /********************************************************************************
  * 							DOCUMENTATION
- * @fn		:
  *
- * @brief	:
+ * @fn		: void SPI_Init(SPI_Handle_t *pSPIHandle)
  *
- * @param	:
- * @param	:
- * @param	:
+ * @brief	: Initializes the SPI peripheral according according to SPI_Handle_t
  *
- * @return  :
+ * @param	: SPI_Handle_t *pSPIHandle
  *
- * @Note	:
+ * @return  : void
+ *
+ * @Note	: NULL
  */
 void SPI_Init(SPI_Handle_t *pSPIHandle)									//INITIALIZES SPI PORT
 {
@@ -188,34 +243,51 @@ void SPI_Init(SPI_Handle_t *pSPIHandle)									//INITIALIZES SPI PORT
 
 /********************************************************************************
  * 							DOCUMENTATION
- * @fn		:
  *
- * @brief	:
+ * @fn		: void SPI_DeInit(SPI_RegDef_t *pSPIx)
  *
- * @param	:
- * @param	:
- * @param	:
+ * @brief	: Deinits the given SPI peripheral
  *
- * @return  :
+ * @param	: SPI_RegDef_t *pSPIx
  *
- * @Note	:
+ * @return  : void
+ *
+ * @Note	: NULL
  */
 void SPI_DeInit(SPI_RegDef_t *pSPIx)										//DEINITIALIZES SPI PORT
 {
-	//TODO
+
+	if(pSPIx == SPI1)
+	{
+		SPI1_REG_RESET();
+	}else if(pSPIx == SPI2)
+	{
+		SPI2_REG_RESET();
+	}else if(pSPIx == SPI2)
+	{
+		SPI2_REG_RESET();
+	}else if(pSPIx == SPI3)
+	{
+		SPI3_REG_RESET();
+	}else if(pSPIx == SPI4)
+	{
+		SPI4_REG_RESET();
+	}
+
 }
 
 /********************************************************************************
  * 							DOCUMENTATION
- * @fn		:
  *
- * @brief	:
+ * @fn		: void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTXBuffer, uint32_t Len)
  *
- * @param	:
- * @param	:
- * @param	:
+ * @brief	: Transmits the data
  *
- * @return  :
+ * @param	: SPI_RegDef_t *pSPIx
+ * @param	: uint8_t *pTXBuffer
+ * @param	: uint32_t Len
+ *
+ * @return  : void
  *
  * @Note	:	THIS IS BLOCKING CALL / POLLING BASED
  */
@@ -265,17 +337,18 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTXBuffer, uint32_t Len)
 
 /********************************************************************************
  * 							DOCUMENTATION
- * @fn		:
  *
- * @brief	:
+ * @fn		: void SPI_RecieveData(SPI_RegDef_t *pSPIx, uint8_t *pRXBuffer, uint32_t Len)
  *
- * @param	:
- * @param	:
- * @param	:
+ * @brief	: Receives data through SPI peripheral of the given data length
  *
- * @return  :
+ * @param	: SPI_RegDef_t *pSPIx
+ * @param	: uint8_t *pRXBuffer
+ * @param	: uint32_t Len
  *
- * @Note	:
+ * @return  : void
+ *
+ * @Note	: NULL
  */
 void SPI_RecieveData(SPI_RegDef_t *pSPIx, uint8_t *pRXBuffer, uint32_t Len)
 {
@@ -316,37 +389,72 @@ void SPI_RecieveData(SPI_RegDef_t *pSPIx, uint8_t *pRXBuffer, uint32_t Len)
 
 /********************************************************************************
  * 							DOCUMENTATION
- * @fn		:
  *
- * @brief	:
+ * @fn		: void SPI_IRQ_ITConfig(uint8_t IRQNumber, uint8_t En_Di)					//CONFIGURES IRQ
  *
- * @param	:
- * @param	:
- * @param	:
+ * @brief	: Enables/Disables IRQNumber of the SPI peripheral
  *
- * @return  :
+ * @param	: uint8_t IRQNumber
+ * @param	: uint8_t En_Di
  *
- * @Note	:
+ * @return  : void
+ *
+ * @Note	: NULL
  */
 
 void SPI_IRQ_ITConfig(uint8_t IRQNumber, uint8_t En_Di)					//CONFIGURES IRQ
 {
+	if(En_Di == ENABLE)
+	{
+		if(IRQNumber <= 31)
+		{
+			//SET ISER0
+			*NVIC_ISER0 |= (0x1 << IRQNumber);
+		}
+		else if(IRQNumber <= 63 && IRQNumber >31)
+		{
+			//SET ISER1
+			*NVIC_ISER1 |= (0x1 << (IRQNumber % 32));
+		}
+		else if(IRQNumber <= 95 && IRQNumber >63)
+		{
+			//SET ISER2
+			*NVIC_ISER2 |= (0x1 << (IRQNumber % 64));
+		}
+	}
 
+	if(En_Di == DISABLE)
+	{
+		if(IRQNumber <= 31)
+		{
+			//SET ICER0
+			*NVIC_ICER0 |=  (0x1 << IRQNumber);
+		}
+		else if(IRQNumber <= 63 && IRQNumber >31)
+		{
+			//SET ICER1
+			*NVIC_ICER1 |=  (0x1 << (IRQNumber % 32));
+		}
+		else if(IRQNumber <= 95 && IRQNumber >63)
+		{
+			//SET ICER2
+			*NVIC_ICER2 |=  (0x1 << (IRQNumber % 64));
+		}
+	}
 }
 
 /********************************************************************************
  * 							DOCUMENTATION
- * @fn		:
  *
- * @brief	:
+ * @fn		: void SPI_IRQHandling(SPI_Handle_t *pHandle)
  *
- * @param	:
- * @param	:
- * @param	:
+ * @brief	: Handler for SPI peripheral
  *
- * @return  :
+ * @param	: SPI_Handle_t *pHandle
  *
- * @Note	:
+ * @return  : void
+ *
+ * @Note	: NULL
  */
 void SPI_IRQHandling(SPI_Handle_t *pHandle)								//HANDLER CODE FOR ISR
 {
@@ -386,19 +494,19 @@ void SPI_IRQHandling(SPI_Handle_t *pHandle)								//HANDLER CODE FOR ISR
 
 /********************************************************************************
  * 							DOCUMENTATION
- * @fn		:
  *
- * @brief	:
+ * @fn		: uint8_t SPI_SendData_IT(SPI_Handle_t *pSPIHandle, uint8_t *pTXBuffer, uint32_t Len)
  *
- * @param	:
- * @param	:
- * @param	:
+ * @brief	: Interrupt based function to transmit data through SPI, len amount of data to be sent
  *
- * @return  :
+ * @param	: SPI_Handle_t *pSPIHandle
+ * @param	: uint8_t *pTXBuffer
+ * @param	: uint32_t Len
  *
- * @Note	:
+ * @return  : uint8_t
+ *
+ * @Note	: Interrupt based call
  */
-
 uint8_t SPI_SendData_IT(SPI_Handle_t *pSPIHandle, uint8_t *pTXBuffer, uint32_t Len)
 {
 	uint8_t state = pSPIHandle->TxState;
@@ -422,6 +530,21 @@ uint8_t SPI_SendData_IT(SPI_Handle_t *pSPIHandle, uint8_t *pTXBuffer, uint32_t L
 }
 
 
+/********************************************************************************
+ * 							DOCUMENTATION
+ *
+ * @fn		: uint8_t SPI_RecieveData_IT(SPI_Handle_t *pSPIHandle, uint8_t *pRXBuffer, uint32_t Len)
+ *
+ * @brief	: Interrupt based function to receive data through SPI, len amount of data to be received
+ *
+ * @param	: SPI_Handle_t *pSPIHandle
+ * @param	: uint8_t *pRXBuffer
+ * @param	: uint32_t Len
+ *
+ * @return  : uint8_t
+ *
+ * @Note	: returns state
+ */
 uint8_t SPI_RecieveData_IT(SPI_Handle_t *pSPIHandle, uint8_t *pRXBuffer, uint32_t Len)
 {
 	uint8_t state = pSPIHandle->RxState;
@@ -444,11 +567,42 @@ uint8_t SPI_RecieveData_IT(SPI_Handle_t *pSPIHandle, uint8_t *pRXBuffer, uint32_
 
 }
 
+/********************************************************************************
+ * 							DOCUMENTATION
+ *
+ * @fn		: void SPI_IRQConfig(uint8_t IRQNumber,uint32_t IRQPriority)					// SPI PRIORITY HANDLER
+ *
+ * @brief	: Configures the IRQ Priority of the given IRQ number
+ *
+ * @param	: uint8_t IRQNumber
+ * @param	: uint32_t IRQPriority
+ *
+ * @return  : void
+ *
+ * @Note	: NULL
+ */
 void SPI_IRQConfig(uint8_t IRQNumber,uint32_t IRQPriority)					// SPI PRIORITY HANDLER
 {
+	uint8_t iprx 		= IRQNumber / 4;
+	uint8_t ipr_section = IRQNumber % 4;
 
+	uint8_t shift_amnt  = ((8 * ipr_section) + (8 - NO_PRIORITY_BITS));
+	*( NVIC_IPR_BA + (iprx) ) |= (IRQPriority << shift_amnt);
 }
 
+/********************************************************************************
+ * 							DOCUMENTATION
+ *
+ * @fn		: static void SPI_RXNE_IT_Handle(SPI_Handle_t *pSPIHandle)
+ *
+ * @brief	: Handle function for SPI Receive - Interrupt based
+ *
+ * @param	: SPI_Handle_t *pSPIHandle
+ *
+ * @return  : void
+ *
+ * @Note	: private function
+ */
 static void SPI_RXNE_IT_Handle(SPI_Handle_t *pSPIHandle)
 {
 
@@ -489,6 +643,19 @@ static void SPI_RXNE_IT_Handle(SPI_Handle_t *pSPIHandle)
 	}
 }
 
+/********************************************************************************
+ * 							DOCUMENTATION
+ *
+ * @fn		: static void SPI_TXE_IT_Handle(SPI_Handle_t *pSPIHandle)
+ *
+ * @brief	: Handle function for SPI Transmit - Interrupt based
+ *
+ * @param	: SPI_Handle_t *pSPIHandle
+ *
+ * @return  : void
+ *
+ * @Note	: private function
+ */
 static void SPI_TXE_IT_Handle(SPI_Handle_t *pSPIHandle)
 {
 
@@ -532,6 +699,19 @@ static void SPI_TXE_IT_Handle(SPI_Handle_t *pSPIHandle)
 
 }
 
+/********************************************************************************
+ * 							DOCUMENTATION
+ *
+ * @fn		: static void SPI_OVR_IT_Handle(SPI_Handle_t *pSPIHandle)
+ *
+ * @brief	: Handle function for Overrun ERROR
+ *
+ * @param	: SPI_Handle_t *pSPIHandle
+ *
+ * @return  : void
+ *
+ * @Note	: Private function
+ */
 static void SPI_OVR_IT_Handle(SPI_Handle_t *pSPIHandle)
 {
 
@@ -549,6 +729,19 @@ static void SPI_OVR_IT_Handle(SPI_Handle_t *pSPIHandle)
 	SPI_AppEventCallback(pSPIHandle, SPI_EVENT_OVR_ERR);
 }
 
+/********************************************************************************
+ * 							DOCUMENTATION
+ *
+ * @fn		: void SPI_AbortTx(SPI_Handle_t *pSPIHandle)
+ *
+ * @brief	: Aborts Transmission of the given SPI peripheral
+ *
+ * @param	: SPI_Handle_t *pSPIHandle
+ *
+ * @return  : void
+ *
+ * @Note	: NULL
+ */
 void SPI_AbortTx(SPI_Handle_t *pSPIHandle)
 {
 
@@ -559,6 +752,19 @@ void SPI_AbortTx(SPI_Handle_t *pSPIHandle)
 
 }
 
+/********************************************************************************
+ * 							DOCUMENTATION
+ *
+ * @fn		: void SPI_AbortRx(SPI_Handle_t *pSPIHandle)
+ *
+ * @brief	: Aborts Reception of the given SPI peripheral
+ *
+ * @param	: SPI_Handle_t *pSPIHandle
+ *
+ * @return  : SPI_Handle_t *pSPIHandle
+ *
+ * @Note	: NULL
+ */
 void SPI_AbortRx(SPI_Handle_t *pSPIHandle)
 {
 	pSPIHandle->pSPIx->CR2 &= ~( 0x1 << SPI_CR2_RXNEIE );
@@ -568,6 +774,19 @@ void SPI_AbortRx(SPI_Handle_t *pSPIHandle)
 
 }
 
+/********************************************************************************
+ * 							DOCUMENTATION
+ *
+ * @fn		: void SPI_ClearOVR(SPI_RegDef_t *pSPIHandle)
+ *
+ * @brief	: Clears the Overrun ERROR
+ *
+ * @param	: SPI_RegDef_t *pSPIHandle
+ *
+ * @return  : void
+ *
+ * @Note	: NULL
+ */
 void SPI_ClearOVR(SPI_RegDef_t *pSPIHandle)
 {
 
@@ -580,17 +799,23 @@ void SPI_ClearOVR(SPI_RegDef_t *pSPIHandle)
 	(void)temp;
 }
 
+/********************************************************************************
+ * 							DOCUMENTATION
+ *
+ * @fn		: __weak void SPI_AppEventCallback(SPI_Handle_t *pSPIHandle, uint8_t EventCall)
+ *
+ * @brief	: THis is a weak implementation. Don't remove this;
+ * 			  Copy the function to the User file and remove the __weak attribute
+ *
+ * @param	: SPI_Handle_t *pSPIHandle
+ * @param	: uint8_t EventCall
+ *
+ * @return  : void
+ *
+ * @Note	: NULL
+ */
 __weak void SPI_AppEventCallback(SPI_Handle_t *pSPIHandle, uint8_t EventCall)
 {
 	//THIS IS A WEAK IMPLEMENTATION -- THE USER MAY OVERRIDE THIS
-
-
 }
-
-
-
-
-
-
-
 

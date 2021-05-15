@@ -5,7 +5,7 @@
  *      Author: ark
  */
 
-#if 0
+#if 1
 #include"stm32f446xx.h"
 #include"stm32f446xx_gpio.h"
 #include"stm32f446xx_i2c.h"

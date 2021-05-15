@@ -11,6 +11,7 @@
 
 /********************************************************************************
  * 							DOCUMENTATION
+ *
  * @fn		: GPIO_PeriClkCntrl
  *
  * @brief	: this func ENABLES or DISABLES for the given GPIO peripheral clock. The address of the GPIO port is sent to it
@@ -101,17 +102,16 @@ void GPIO_PeriClkCntrl(GPIO_regdef_t *pGPIOx, uint8_t En_Di)
 
 /********************************************************************************
  * 							DOCUMENTATION
- * @fn		:
  *
- * @brief	:
+ * @fn		: void GPIO_Init(GPIO_handle_t *pGPIOHandle)
  *
- * @param	:
- * @param	:
- * @param	:
+ * @brief	: Initializes the Gpio port  and pin according to the given structure pGPIOHandle
  *
- * @return  :
+ * @param	: GPIO_handle_t *pGPIOHandle
  *
- * @Note	:
+ * @return  : void
+ *
+ * @Note	: NULL
  */
 void GPIO_Init(GPIO_handle_t *pGPIOHandle)
 {
@@ -210,17 +210,16 @@ void GPIO_Init(GPIO_handle_t *pGPIOHandle)
 
 /********************************************************************************
  * 							DOCUMENTATION
- * @fn		:
  *
- * @brief	:
+ * @fn		: void GPIO_DeInit(GPIO_regdef_t *pGPIOx)
  *
- * @param	:
- * @param	:
- * @param	:
+ * @brief	: Deinitializes any initialized GPIO port
  *
- * @return  :
+ * @param	: GPIO_regdef_t *pGPIOx
  *
- * @Note	:
+ * @return  : void
+ *
+ * @Note	: This resets the entire PORT not only the specific pin
  */
 void GPIO_DeInit(GPIO_regdef_t *pGPIOx)
 {
@@ -261,17 +260,17 @@ void GPIO_DeInit(GPIO_regdef_t *pGPIOx)
 
 /********************************************************************************
  * 							DOCUMENTATION
- * @fn		:
  *
- * @brief	:
+ * @fn		: uint8_t GPIO_ReadIPin(GPIO_regdef_t *pGPIOx, uint8_t Pin_No)
  *
- * @param	:
- * @param	:
- * @param	:
+ * @brief	: Reads input from any specified pin from any specified port
  *
- * @return  :
+ * @param	: GPIO_regdef_t *pGPIOx
+ * @param	: uint8_t Pin_No
  *
- * @Note	:
+ * @return  : void
+ *
+ * @Note	: Returns SET(1) or RESET(0)
  */
 uint8_t GPIO_ReadIPin(GPIO_regdef_t *pGPIOx, uint8_t Pin_No)
 {
@@ -285,17 +284,16 @@ uint8_t GPIO_ReadIPin(GPIO_regdef_t *pGPIOx, uint8_t Pin_No)
 
 /********************************************************************************
  * 							DOCUMENTATION
- * @fn		:
  *
- * @brief	:
+ * @fn		: uint16_t GPIO_ReadIPort(GPIO_regdef_t *pGPIOx)
  *
- * @param	:
- * @param	:
- * @param	:
+ * @brief	: Reads an entire port
  *
- * @return  :
+ * @param	: GPIO_regdef_t *pGPIOx
  *
- * @Note	:
+ * @return  : uint16_t
+ *
+ * @Note	: NULL
  */
 uint16_t GPIO_ReadIPort(GPIO_regdef_t *pGPIOx)
 {
@@ -310,17 +308,18 @@ uint16_t GPIO_ReadIPort(GPIO_regdef_t *pGPIOx)
 
 /********************************************************************************
  * 							DOCUMENTATION
- * @fn		:
  *
- * @brief	:
+ * @fn		: void GPIO_WriteOPin(GPIO_regdef_t *pGPIOx, uint8_t Pin_No, uint8_t value)
  *
- * @param	:
- * @param	:
- * @param	:
+ * @brief	: Writes HIGH or LOW to any specified pin of any specified PORT
  *
- * @return  :
+ * @param	: GPIO_regdef_t *pGPIOx
+ * @param	: uint8_t Pin_No
+ * @param	: uint8_t value
  *
- * @Note	:
+ * @return  : void
+ *
+ * @Note	: NULL
  */
 void GPIO_WriteOPin(GPIO_regdef_t *pGPIOx, uint8_t Pin_No, uint8_t value)
 {
@@ -340,17 +339,17 @@ void GPIO_WriteOPin(GPIO_regdef_t *pGPIOx, uint8_t Pin_No, uint8_t value)
 
 /********************************************************************************
  * 							DOCUMENTATION
- * @fn		:
  *
- * @brief	:
+ * @fn		: void GPIO_WriteOPort(GPIO_regdef_t *pGPIOx, uint16_t value)
  *
- * @param	:
- * @param	:
- * @param	:
+ * @brief	: Writes a 16 bit value to any specified PORT
  *
- * @return  :
+ * @param	: GPIO_regdef_t *pGPIOx
+ * @param	: uint16_t value
  *
- * @Note	:
+ * @return  : void
+ *
+ * @Note	: NULL
  */
 void GPIO_WriteOPort(GPIO_regdef_t *pGPIOx, uint16_t value)
 {
@@ -361,17 +360,17 @@ void GPIO_WriteOPort(GPIO_regdef_t *pGPIOx, uint16_t value)
 
 /********************************************************************************
  * 							DOCUMENTATION
- * @fn		:
  *
- * @brief	:
+ * @fn		: void GPIO_ToggleOPin(GPIO_regdef_t *pGPIOx, uint8_t Pin_No)
  *
- * @param	:
- * @param	:
- * @param	:
+ * @brief	: Toggles a specified GPIO pin of a specified GPIO PORT
  *
- * @return  :
+ * @param	: GPIO_regdef_t *pGPIOx
+ * @param	: uint8_t Pin_No
  *
- * @Note	:
+ * @return  : void
+ *
+ * @Note	: NULL
  */
 void GPIO_ToggleOPin(GPIO_regdef_t *pGPIOx, uint8_t Pin_No)
 {
@@ -382,17 +381,17 @@ void GPIO_ToggleOPin(GPIO_regdef_t *pGPIOx, uint8_t Pin_No)
 
 /********************************************************************************
  * 							DOCUMENTATION
- * @fn		:
  *
- * @brief	:
+ * @fn		: void GPIO_IRQ_ITConfig(uint8_t IRQNumber, uint8_t En_Di)
  *
- * @param	:
- * @param	:
- * @param	:
+ * @brief	: Enables the EXTI line corresponding to any GPIO pin
  *
- * @return  :
+ * @param	: uint8_t IRQNumber
+ * @param	: uint8_t En_Di
  *
- * @Note	:
+ * @return  : void
+ *
+ * @Note	: This configures the NVIC of the ARM processor and sets the IRQ line corresponding to the given IRQNumber
  */
 void GPIO_IRQ_ITConfig(uint8_t IRQNumber, uint8_t En_Di)
 {
@@ -439,17 +438,17 @@ void GPIO_IRQ_ITConfig(uint8_t IRQNumber, uint8_t En_Di)
 
 /********************************************************************************
  * 							DOCUMENTATION
- * @fn		:
  *
- * @brief	:
+ * @fn		: void GPIO_IRQConfig(uint8_t IRQNumber, uint32_t IRQPriority)
  *
- * @param	:
- * @param	:
- * @param	:
+ * @brief	: Configures the IRQ priority of the corresponding IRQNumber
  *
- * @return  :
+ * @param	: uint8_t IRQNumber
+ * @param	: uint32_t IRQPriority
  *
- * @Note	:
+ * @return  : void
+ *
+ * @Note	: NULL
  */
 
 void GPIO_IRQConfig(uint8_t IRQNumber, uint32_t IRQPriority)
@@ -465,17 +464,16 @@ void GPIO_IRQConfig(uint8_t IRQNumber, uint32_t IRQPriority)
 }
 /********************************************************************************
  * 							DOCUMENTATION
- * @fn		:
  *
- * @brief	:
+ * @fn		: void GPIO_IRQHandling(uint8_t Pin_No)
  *
- * @param	:
- * @param	:
- * @param	:
+ * @brief	: Clears the IRQ pending register when a request is received
  *
- * @return  :
+ * @param	: uint8_t Pin_No
  *
- * @Note	:
+ * @return  : void
+ *
+ * @Note	: NULL
  */
 void GPIO_IRQHandling(uint8_t Pin_No)
 {

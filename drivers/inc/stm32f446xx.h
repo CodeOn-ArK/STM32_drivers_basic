@@ -292,21 +292,21 @@ typedef struct{
 #define GPIOC			(GPIO_regdef_t *)(GPIOC_BA)
 #define GPIOD			(GPIO_regdef_t *)(GPIOD_BA)
 #define GPIOE			(GPIO_regdef_t *)(GPIOE_BA)
-#define GPIOF				(GPIO_regdef_t *)(GPIOF_BA)
+#define GPIOF			(GPIO_regdef_t *)(GPIOF_BA)
 #define GPIOG			(GPIO_regdef_t *)(GPIOG_BA)
 #define GPIOH			(GPIO_regdef_t *)(GPIOH_BA)
 
 
 
-#define RCC 				((RCC_RegDef_t *)(RCC_BA))
-#define EXTI				((EXTI_RegDef_t *)(EXTI_BA))
+#define RCC 			((RCC_RegDef_t *)(RCC_BA))
+#define EXTI			((EXTI_RegDef_t *)(EXTI_BA))
 #define SYSCFG			((SYSCFG_RegDef_t *)(SYSCFG_BA))
 
 
-#define SPI1				((SPI_RegDef_t *)(SPI1_BA))
-#define SPI2				((SPI_RegDef_t *)(SPI2_BA))
-#define SPI3				((SPI_RegDef_t *)(SPI3_BA))
-#define SPI4				((SPI_RegDef_t *)(SPI4_BA))
+#define SPI1			((SPI_RegDef_t *)(SPI1_BA))
+#define SPI2			((SPI_RegDef_t *)(SPI2_BA))
+#define SPI3			((SPI_RegDef_t *)(SPI3_BA))
+#define SPI4			((SPI_RegDef_t *)(SPI4_BA))
 
 
 #define USART1			((USART_RegDef_t *)(USART1_BA))
@@ -317,9 +317,9 @@ typedef struct{
 #define USART6			((USART_RegDef_t *)(USART6_BA))
 
 
-#define I2C1				((I2C_RegDef_t *)(I2C1_BA))
-#define I2C2				((I2C_RegDef_t *)(I2C2_BA))
-#define I2C3				((I2C_RegDef_t *)(I2C3_BA))
+#define I2C1			((I2C_RegDef_t *)(I2C1_BA))
+#define I2C2			((I2C_RegDef_t *)(I2C2_BA))
+#define I2C3			((I2C_RegDef_t *)(I2C3_BA))
 
 
 /********************************** ENABLE MACROS *************************************/
