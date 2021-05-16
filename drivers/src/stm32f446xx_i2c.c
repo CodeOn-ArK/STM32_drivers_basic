@@ -704,7 +704,7 @@ uint8_t  I2C_MasterSendDataIT(I2C_Handle_t *pI2CHandle,uint8_t *pTxBuffer, uint3
  * @Note              - Use it only for I2C peripheral
 
  */
-void I2C_IRQ_ITConfig(uint8_t irqnumber, uint8_t en_di)					//CONFIGURES IRQ
+void I2C_IRQ_ITConfig(uint8_t IRQNumber, uint8_t En_Di)					//CONFIGURES IRQ
 {
 
 	if(En_Di == ENABLE)
