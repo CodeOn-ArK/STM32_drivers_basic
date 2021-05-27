@@ -166,7 +166,7 @@ void I2C_CloseReceiveData(I2C_Handle_t *pI2CHandle);
 /*
  * IRQ CONFIG && ISR HANDLING
  */
-void I2C_IRQ_ITConfig(uint8_t IRQNumber, uint8_t En_Di);					//CONFIGURES IRQ
+void I2C_IRQ_ITConfig(uint8_t IRQNumber, uint8_t En_Di);							//CONFIGURES IRQ
 void I2C_IRQPriorityConfig(uint8_t IRQNumber,uint32_t IRQPriority);					// I2C PRIORITY HANDLER
 
 void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle);

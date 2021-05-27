@@ -10,6 +10,20 @@
 
 extern USART_Handle_t usart2_handle;
 
+/*********************************************************************
+ * @fn      		  - void USART_PeriClkCntrl(USART_RegDef_t *pUSARTx, uint8_t ENDI)
+ *
+ * @brief             - Sets the peripheral clock of the corresponding USART peripheral mentioned
+ * 						in the USART_RegDef_t instance
+ *
+ * @param[in]         - USART_RegDef_t *pUSARTx; Instance to Hold the USART peripheral
+ * @param[in]         - uint8_t ENDI; Enable/Disable the corresponding peripheral clock
+ *
+ * @return            - void
+ *
+ * @Note              - NULL
+
+ */
 void USART_PeriClkCntrl(USART_RegDef_t *pUSARTx, uint8_t ENDI)
 {
 	if(ENDI == ENABLE)
@@ -60,17 +74,17 @@ void USART_PeriClkCntrl(USART_RegDef_t *pUSARTx, uint8_t ENDI)
 }
 
 /*********************************************************************
- * @fn      		  - USART_SetBaudRate
+ * @fn      		  - USART_SetBaudRate(USART_RegDef_t *pUSARTx, uint32_t BaudRate)
  *
- * @brief             -
+ * @brief             - Sets baud rate of the corresponding USART peripheral according to
+ * 						the specified BaudRate
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - USART_RegDef_t *pUSARTx; Instance to Hold the USART peripheral
+ * @param[in]         - uint32_t BaudRate; Any of the predefined baud rates ref @USART_Baud
  *
- * @return            -
+ * @return            - void
  *
- * @Note              -  Resolve all the TODOs
+ * @Note              -
 
  */
 void USART_SetBaudRate(USART_RegDef_t *pUSARTx, uint32_t BaudRate)
@@ -135,6 +149,20 @@ void USART_SetBaudRate(USART_RegDef_t *pUSARTx, uint32_t BaudRate)
 }
 
 
+/*********************************************************************
+ * @fn      		  - USART_GetFlagStatus(USART_RegDef_t *pUSARTx, uint8_t StatusFlagName)
+ *
+ * @brief             - returns the status of flag register(SR) of the corresponding USART
+ * 						peripheral
+ *
+ * @param[in]         - USART_RegDef_t *pUSARTx; Instance to Hold the USART peripheral
+ * @param[in]         - uint8_t StatusFlagName; Flag name ,which is to be tested, in the SR
+ *
+ * @return            - uint8_t (SET/RESET)
+ *
+ * @Note              - NULL
+
+ */
 uint8_t USART_GetFlagStatus(USART_RegDef_t *pUSARTx, uint8_t StatusFlagName)
 {
 	if( pUSARTx->SR & (0x1 << StatusFlagName) )
@@ -144,6 +172,19 @@ uint8_t USART_GetFlagStatus(USART_RegDef_t *pUSARTx, uint8_t StatusFlagName)
 }
 
 
+/*********************************************************************
+ * @fn      		  - USART_ClearFlag(USART_RegDef_t *pUSARTx, uint16_t StatusFlagName)
+ *
+ * @brief             - Clear the corresponding flag in the SR
+ *
+ * @param[in]         - USART_RegDef_t *pUSARTx; Instance to Hold the USART peripheral
+ * @param[in]         - uint16_t StatusFlagName; Status flag name in SR of the corresponding register
+ *
+ * @return            - void
+ *
+ * @Note              - NULL
+
+ */
 void USART_ClearFlag(USART_RegDef_t *pUSARTx, uint16_t StatusFlagName)
 {
 
@@ -151,17 +192,16 @@ void USART_ClearFlag(USART_RegDef_t *pUSARTx, uint16_t StatusFlagName)
 }
 
 /*********************************************************************
- * @fn      		  - USART_Init
+ * @fn      		  - USART_Init(USART_Handle_t *pUSARTHandle)
  *
- * @brief             -
+ * @brief             - Initializes the defined USART peripheral with the configuration
+ * 						given in USART_Handle_t structure
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - USART_Handle_t *pUSARTHandle; Handle structure to contain the configuration
  *
- * @return            -
+ * @return            - void
  *
- * @Note              - Resolve all the TODOs
+ * @Note              - NULL
 
  */
 void USART_Init(USART_Handle_t *pUSARTHandle)
@@ -263,17 +303,16 @@ void USART_Init(USART_Handle_t *pUSARTHandle)
 
 
 /*********************************************************************
- * @fn      		  - USART_EnableOrDisable
+ * @fn      		  - USART_PeripheralControl(USART_RegDef_t *pUSARTx, uint8_t Cmd)
  *
- * @brief             -
+ * @brief             - Enables the given USART peripheral by setting the UE bit in CR1 to 1
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - USART_RegDef_t *pUSARTx; Instance to Hold the USART peripheral
+ * @param[in]         - uint8_t Cmd; Enable/Disable
  *
- * @return            -
+ * @return            - void
  *
- * @Note              -
+ * @Note              - NULL
 
  */
 void USART_PeripheralControl(USART_RegDef_t *pUSARTx, uint8_t Cmd)
@@ -290,17 +329,17 @@ void USART_PeripheralControl(USART_RegDef_t *pUSARTx, uint8_t Cmd)
 
 
 /*********************************************************************
- * @fn      		  - USART_SendData
+ * @fn      		  - USART_SendData(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer, uint32_t Len)
  *
- * @brief             -
+ * @brief             - Transmits data contained in pTxBuffer from the corresponding USART peripheral
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - USART_Handle_t *pUSARTHandle; Handle structure of the corresponding USART
+ * @param[in]         - uint8_t *pTxBuffer; Buffer to contain the data to be sent
+ * @param[in]         - uint32_t Len; No. of bytes ot be sent
  *
- * @return            -
+ * @return            - void
  *
- * @Note              - Resolve all the TODOs
+ * @Note              - NULL
 
  */
 void USART_SendData(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer, uint32_t Len)
@@ -353,17 +392,17 @@ void USART_SendData(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer, uint32_t L
 
 
 /*********************************************************************
- * @fn      		  - USART_ReceiveData
+ * @fn      		  - USART_ReceiveData(USART_Handle_t *pUSARTHandle, uint8_t *pRxBuffer, uint32_t Len)
  *
- * @brief             -
+ * @brief             - Receives data in the pRxBuffer from the corresponding USART peripheral
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - USART_Handle_t *pUSARTHandle; Handle structure of the corresponding USART
+ * @param[in]         - uint8_t *pRxBuffer; Buffer to contain the data to be Received
+ * @param[in]         - uint32_t Len; No. of bytes to be received
  *
- * @return            -
+ * @return            - void
  *
- * @Note              -
+ * @Note              - NULL
 
  */
 
@@ -371,8 +410,8 @@ void USART_ReceiveData(USART_Handle_t *pUSARTHandle, uint8_t *pRxBuffer, uint32_
 {
    //Loop over until "Len" number of bytes are transferred
 	uint8_t* head;
-	uint32_t i = 0;
-	for(i ; i <  (Len+1) ; i++)
+
+	for(uint32_t i = 0 ; i <  (Len+1) ; i++)
 	{
 		//Implement the code to wait until RXNE flag is set in the SR
 		while(! USART_GetFlagStatus(pUSARTHandle->pUSARTx,  USART_SR_RXNE));
@@ -509,6 +548,20 @@ uint8_t USART_ReceiveDataIT(USART_Handle_t *pUSARTHandle,uint8_t *pRxBuffer, uin
 
 */
 
+/*********************************************************************
+ * @fn      		  - USART_IRQInterruptConfig(uint8_t IRQNumber, uint8_t ENDI)
+ *
+ * @brief             - Enables the IRQ line of the corresponding IRQNumber
+ *
+ * @param[in]         - uint8_t IRQNumber; IRQ number of the Peripheral whose Interrupt line is to
+ * 						be enabled/disabled
+ * @param[in]         - uint8_t ENDI; Enable/Disable
+ *
+ * @return            - void
+ *
+ * @Note              - NULL
+
+ */
 void USART_IRQInterruptConfig(uint8_t IRQNumber, uint8_t ENDI)
 {
 	if( ENDI == ENABLE )
@@ -542,10 +595,21 @@ void USART_IRQInterruptConfig(uint8_t IRQNumber, uint8_t ENDI)
 
 }
 
+/*********************************************************************
+ * @fn      		  - USART_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority)
+ *
+ * @brief             - Configures the priority level of the corresponding IRQNumber
+ *
+ * @param[in]         - uint8_t IRQNumber; IRQNumber whose priority isto be configured
+ * @param[in]         - uint32_t IRQPriority); IRQ priority level, can be any number between 0 - 15
+ *
+ * @return            - void
+ *
+ * @Note              - NULL
+
+ */
 void USART_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority)
 {
-
-
 	uint8_t iprx 		= IRQNumber / 4;
 	uint8_t ipr_section = IRQNumber % 4;
 
