@@ -410,8 +410,8 @@ void USART_ReceiveData(USART_Handle_t *pUSARTHandle, uint8_t *pRxBuffer, uint32_
 {
    //Loop over until "Len" number of bytes are transferred
 	uint8_t* head;
-
-	for(uint32_t i = 0 ; i <  (Len+1) ; i++)
+	uint32_t i = 0;
+	for(i ; i <  (Len+1) ; i++)
 	{
 		//Implement the code to wait until RXNE flag is set in the SR
 		while(! USART_GetFlagStatus(pUSARTHandle->pUSARTx,  USART_SR_RXNE));
@@ -474,40 +474,35 @@ void USART_ReceiveData(USART_Handle_t *pUSARTHandle, uint8_t *pRxBuffer, uint32_
 }
 
 /*********************************************************************
- * @fn      		  - USART_SendDataWithIT
+ * @fn      		  - USART_SendDataIT(USART_Handle_t *pUSARTHandle,uint8_t *pTxBuffer, uint32_t Len)
  *
- * @brief             -
+ * @brief             - Sends data contained in pTxBuffer in interrupt mode
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - USART_Handle_t *pUSARTHandle;USART_Handle_t *pUSARTHandle; Handle structure to contain the configuration
+ * @param[in]         - uint8_t *pTxBuffer; the buffer which contains the stream to be sent
+ * @param[in]         - uint32_t Len; length of the buffer
  *
- * @return            -
+ * @return            - uint8_t (txstate)
  *
- * @Note              - Resolve all the TODOs
-
+ * @Note              - NULL
  */
-/*
 uint8_t USART_SendDataIT(USART_Handle_t *pUSARTHandle,uint8_t *pTxBuffer, uint32_t Len)
 {
-	uint8_t txstate = pUSARTHandle->TODO;
+	uint8_t txstate = pUSARTHandle->TxBusyState;
 
 	if(txstate != USART_BUSY_IN_TX)
 	{
-		pUSARTHandle->TODO = Len;
-		pUSARTHandle->pTxBuffer = TODO;
-		pUSARTHandle->TxBusyState = TODO;
+		pUSARTHandle->USART_Config.USART_WordLength = Len;
+		pUSARTHandle->pTxBuffer 					= (uint8_t *)pTxBuffer;
+		pUSARTHandle->TxBusyState 					= USART_BUSY_IN_TX;
 
 		//Implement the code to enable interrupt for TXE
-		TODO
-
+		pUSARTHandle->pUSARTx->CR1 |= (0x1 << USART_CR1_TXEIE);
 
 		//Implement the code to enable interrupt for TC
-		TODO
-
+		pUSARTHandle->pUSARTx->CR1 |= (0x1 << USART_CR1_TCIE);
 
 	}
-
 	return txstate;
 
 }
@@ -516,37 +511,34 @@ uint8_t USART_SendDataIT(USART_Handle_t *pUSARTHandle,uint8_t *pTxBuffer, uint32
 /*********************************************************************
  * @fn      		  - USART_ReceiveDataIT
  *
- * @brief             -
+ * @brief             - Receives data in pRxBuffer in interrupt mode
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - USART_Handle_t *pUSARTHandle;USART_Handle_t *pUSARTHandle; Handle structure to contain the configuration
+ * @param[in]         - uint8_t *pRxBuffer; the buffer which will contain the stream to be received
+ * @param[in]         - uint32_t Len; length of the buffer
  *
- * @return            -
+ * @return            - uint8_t (rxstate)
  *
- * @Note              - Resolve all the TODOs
-
- *
+ * @Note              - NULL
+ */
 uint8_t USART_ReceiveDataIT(USART_Handle_t *pUSARTHandle,uint8_t *pRxBuffer, uint32_t Len)
 {
-	uint8_t rxstate = pUSARTHandle->TODO;
+	uint8_t rxstate = pUSARTHandle->RxBusyState;
 
-	if(rxstate != TODO)
+	if(rxstate != USART_BUSY_IN_RX)
 	{
 		pUSARTHandle->RxLen = Len;
-		pUSARTHandle->pRxBuffer = TODO;
-		pUSARTHandle->RxBusyState = TODO;
+		(pUSARTHandle->pRxBuffer) = pRxBuffer;
+		pUSARTHandle->RxBusyState = USART_BUSY_IN_RX;
 
 		//Implement the code to enable interrupt for RXNE
-		TODO
+		pUSARTHandle->pUSARTx->CR1 |= (0x1 << USART_CR1_RXNEIE);
 
 	}
 
 	return rxstate;
-
 }
 
-*/
 
 /*********************************************************************
  * @fn      		  - USART_IRQInterruptConfig(uint8_t IRQNumber, uint8_t ENDI)
@@ -560,7 +552,6 @@ uint8_t USART_ReceiveDataIT(USART_Handle_t *pUSARTHandle,uint8_t *pRxBuffer, uin
  * @return            - void
  *
  * @Note              - NULL
-
  */
 void USART_IRQInterruptConfig(uint8_t IRQNumber, uint8_t ENDI)
 {
@@ -618,3 +609,101 @@ void USART_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority)
 
 }
 
+
+#if 0
+/*********************************************************************
+ * @fn      		  - USART_IRQHandling(USART_Handle_t *pUSARTHandle)
+ *
+ * @brief             - Handler function to handle interrupt sequence
+ *
+ * @param[in]         - USART_Handle_t *pUSARTHandle; The handle function containing the configuration of the USART peripheral
+ *
+ * @return            - void
+ *
+ * @Note              - NULL
+
+ */
+void USART_IRQHandling(USART_Handle_t *pUSARTHandle)
+{
+
+	uint32_t temp1 , temp2, temp3;
+
+	uint16_t *pdata;
+
+/*************************Check for TC flag ********************************************/
+
+    //Implement the code to check the state of TC bit in the SR
+	temp1 = pUSARTHandle->pUSARTx->SR & ( 1 << USART_SR_TC);
+
+	 //Implement the code to check the state of TCEIE bit
+	temp2 = pUSARTHandle->pUSARTx->CR1 & ( 1 << USART_CR1_TCIE);
+
+	if(temp1 && temp2 )
+	{
+		//this interrupt is because of TC
+
+		//close transmission and call application callback if TxLen is zero
+		if ( pUSARTHandle->TxBusyState == USART_BUSY_IN_TX)
+		{
+			//Check the TxLen . If it is zero then close the data transmission
+			if(! pUSARTHandle->TxLen )
+			{
+				//Implement the code to clear the TC flag
+				pUSARTHandle->pUSARTx->SR &= ~( 1 << USART_SR_TC);
+
+				//Implement the code to clear the TCIE control bit
+
+				//Reset the application state
+				pUSARTHandle->TxBusyState = USART_READY;
+
+				//Reset Buffer address to NULL
+				pUSARTHandle->pTxBuffer = NULL;
+
+				//Reset the length to zero
+				pUSARTHandle->TxLen = 0;
+
+				//Call the application call back with event USART_EVENT_TX_CMPLT
+				USART_ApplicationEventCallback(pUSARTHandle,USART_EVENT_TX_CMPLT);
+			}
+		}
+	}
+
+/*************************Check for TXE flag ********************************************/
+
+/*************************Check for RXNE flag ********************************************/
+
+/*************************Check for CTS flag ********************************************/
+//Note : CTS feature is not applicable for UART4 and UART5
+
+/*************************Check for IDLE detection flag ********************************************/
+
+/*************************Check for Overrun detection flag ********************************************/
+
+/*************************Check for Error Flag ********************************************/
+
+//noise flag, overrun error and framing error in multibuffer communication
+//We dont discuss multibuffer communication in this course. please refer to the RM
+//The blow code will get executed in only if multibuffer mode is used.
+
+
+}
+
+#endif
+
+/*********************************************************************
+ * @fn      		  - __weak void USART_ApplicationEventCallback(USART_Handle_t *pUSARTHandle,uint8_t event)
+ *
+ * @brief             - Callback function; this is weak implementation : do not remove this
+ *
+ * @param[in]         - USART_Handle_t *pUSARTHandle; The handle function containing the configuration of the USART peripheral
+ * @param[in]         - uint8_t event; event to be tested
+ *
+ * @return            - void
+ *
+ * @Note              - NULL
+
+ */
+__weak void USART_ApplicationEventCallback(USART_Handle_t *pUSARTHandle,uint8_t event)
+{
+
+}

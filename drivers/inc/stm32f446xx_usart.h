@@ -18,10 +18,10 @@ typedef struct{
 
 	uint8_t 	USART_Mode;											//@USART_Mode
 	uint32_t 	USART_Baud;											//@USART_Baud
-	uint8_t 	USART_NoOfStopBits;							//@USART_NoOfStopBits
-	uint8_t 	USART_WordLength;								//@USART_WordLength
+	uint8_t 	USART_NoOfStopBits;									//@USART_NoOfStopBits
+	uint8_t 	USART_WordLength;									//@USART_WordLength
 	uint8_t 	USART_ParityControl;								//@USART_ParityControl
-	uint8_t 	USART_HWFlowControl;						//@USART_HWFlowControl
+	uint8_t 	USART_HWFlowControl;						 		//@USART_HWFlowControl
 
 }USART_Config_t;
 
@@ -32,7 +32,14 @@ typedef struct{
 typedef struct{
 
 	USART_RegDef_t	*pUSARTx;
-	USART_Config_t		USART_Config;
+	USART_Config_t	USART_Config;
+
+	uint8_t 	RxBusyState;										//@USART_State
+	uint8_t 	TxBusyState;										//@USART_State
+	uint8_t 	pRxBuffer;
+	uint8_t 	pTxBuffer;
+	uint8_t 	TxLen;
+	uint8_t 	RxLen;
 
 }USART_Handle_t;
 
@@ -100,6 +107,13 @@ typedef struct{
 #define USART_HW_FLOW_CTRL_CTS     			1
 #define USART_HW_FLOW_CTRL_RTS    			2
 #define USART_HW_FLOW_CTRL_CTS_RTS			3
+
+/*
+ *@USART_State
+ */
+#define USART_BUSY_IN_TX 					0
+#define USART_BUSY_IN_RX 					1
+#define USART_FREE							2
 
 
 /*******************************************************************************************************************************************************
