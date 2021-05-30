@@ -2,7 +2,7 @@
  * 012UART_Tx.c
  *
  *  Created on: 25-Feb-2021
- *      Author: ark
+ *      Author: ArK
  */
 
 #if 0
@@ -10,8 +10,7 @@
 #include<stdio.h>
 #include<string.h>
 #include "stm32f446xx.h"
-
-uint8_t msg[] = "UART " ;
+#include "main.h"
 
 USART_Handle_t usart2_handle;
 
@@ -47,56 +46,17 @@ void 	USART2_GPIOInit(void)
 	GPIO_Init(&usart_gpios);
 
 	//USART@ CLK
-	usart_gpios.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_4;
-	GPIO_Init(&usart_gpios);
-
-	//USART@ CLK
 	//usart_gpios.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_4;
 	//GPIO_Init(&usart_gpios);
 
 
-
-
-}
-
-void GPIO_ButtonInit(void)
-{
-	GPIO_handle_t GPIOBtn,GpioLed;
-
-	//this is btn gpio configuration
-	GPIOBtn.pGPIOx = GPIOA;
-	GPIOBtn.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_10;
-	GPIOBtn.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_IN;
-	GPIOBtn.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
-	GPIOBtn.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
-	GPIOBtn.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;
-
-	GPIO_Init(&GPIOBtn);
-
-	//this is led gpio configuration
-	GpioLed.pGPIOx = GPIOA;
-	GpioLed.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_5;
-	GpioLed.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUT;
-	GpioLed.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
-	GpioLed.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
-	GpioLed.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
-
-	GPIO_PeriClkCntrl(GPIOA,ENABLE);
-
-	GPIO_Init(&GpioLed);
-
-}
-
-void delay(void)
-{
-	for(uint32_t i = 0 ; i < 500000/2 ; i ++);
 }
 
 
 int main(void)
 {
 
-	GPIO_ButtonInit();
+	GPIO_ButtonConfig();
 
 	USART2_GPIOInit();
 
@@ -104,36 +64,17 @@ int main(void)
 
     USART_PeripheralControl(USART2,ENABLE);
 
-    uint8_t pRxBuffer[10];
+    uint8_t pRxBuffer[10] = "Hello\n\r";
+
     while(1)
     {
-       		//wait till button is pressed
-		//while(  GPIO_ReadIPin(GPIOA, GPIO_PIN_10));
+       	//wait till button is pressed
+		while(  GPIO_ReadIPin(GPIOC, GPIO_PIN_12) != GPIO_PIN_RESET );
 
-		char count = '1';
-    	USART_ReceiveData(&usart2_handle, pRxBuffer, 5);
-    	uint8_t msg[] = "UART ";
-
-		//wait till button is pressed
-		while(  GPIO_ReadIPin(GPIOA, GPIO_PIN_10));
-
-    	if(!strcmp((char *)pRxBuffer, "hello"))
-    	{
-		//to avoid button de-bouncing related issues 200ms of delay
-    		delay();
-
-    		USART_SendData(&usart2_handle,msg,strlen((char *)msg));
-    		GPIO_ToggleOPin(GPIOA, GPIO_PIN_5);
-
-    		count++;
-
-    		strcpy(pRxBuffer, "'\0''\0''\0''\0''\0''\0'");
-    		//USART_SendData(&usart2_handle, (uint8_t *)count, 0);
-    	}
+		delay();
+		USART_SendData(&usart2_handle, (uint8_t *)pRxBuffer, strlen((char *)pRxBuffer));
 
     }
-
-	return 0;
 }
 
 #endif

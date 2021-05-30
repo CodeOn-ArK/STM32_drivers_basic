@@ -557,15 +557,15 @@ typedef struct{
 
 
 
-#define SPI_SR_RXNE					0
-#define SPI_SR_TXE					1
-#define SPI_SR_CHSIDE				2
-#define SPI_SR_UDR					3
-#define SPI_SR_CRCERR				4
-#define SPI_SR_MODF				5
-#define SPI_SR_OVR					6
-#define SPI_SR_BSY					7
-#define SPI_SR_FRE					8
+#define SPI_SR_RXNE				(1 << 0)
+#define SPI_SR_TXE				(1 << 1)
+#define SPI_SR_CHSIDE			(1 << 2)
+#define SPI_SR_UDR				(1 << 3)
+#define SPI_SR_CRCERR			(1 << 4)
+#define SPI_SR_MODF				(1 << 5)
+#define SPI_SR_OVR				(1 << 6)
+#define SPI_SR_BSY				(1 << 7)
+#define SPI_SR_FRE				(1 << 8)
 
 
 

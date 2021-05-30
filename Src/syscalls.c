@@ -20,7 +20,7 @@
  *
  ******************************************************************************
  */
-
+//-specs=rdimon.specs -lc -lrdimon
 /* Includes */
 #include <sys/stat.h>
 #include <stdlib.h>

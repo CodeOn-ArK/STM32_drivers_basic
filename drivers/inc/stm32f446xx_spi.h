@@ -88,9 +88,9 @@ typedef struct{
 
 //FLAG MACROS
 
-#define SPI_TXE_FLAG					(0x1 << SPI_SR_TXE)
-#define SPI_RXNE_FLAG					(0x1 << SPI_SR_RXNE)
-#define SPI_BUSY_FLAG					(0x1 << SPI_SR_BSY)
+#define SPI_TXE_FLAG					SPI_SR_TXE
+#define SPI_RXNE_FLAG					SPI_SR_RXNE
+#define SPI_BUSY_FLAG					SPI_SR_BSY
 #define SPIEN							6
 #define SSIEN							8
 #define SSOEEN							2

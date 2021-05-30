@@ -2,13 +2,14 @@
  * 005spi_Tx_only.c
  *
  *  Created on: 11-Jan-2021
- *      Author: KIIT
+ *      Author:	ArK
  */
 #if 0
 #include "stm32f446xx.h"
 #include "stm32f446xx_spi.h"
 #include "stm32f446xx_gpio.h"
 #include <string.h>
+#include "main.h"
 
 /*
  * PB12 -->	SPI2_NSS
@@ -29,7 +30,7 @@ void SPI2_GPIOInits()
 	SPI_pin.GPIO_PinConfig.GPIO_PinAltFunMode = 5;
 	SPI_pin.GPIO_PinConfig.GPIO_PinMode = GPIO_ALT_FN;
 	SPI_pin.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
-	SPI_pin.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
+	SPI_pin.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_LOW;
 	SPI_pin.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
 
 	//NSS
@@ -61,8 +62,9 @@ void SPI2_Inits()
 	SPI2Handle.SPIConfig.SPI_DeviceMode = SPI_MODE_MASTER;
 	SPI2Handle.SPIConfig.SPI_DFF 		= SPI_DFF_8;
 	SPI2Handle.SPIConfig.SPI_SclkSpeed 	= SPI_SCLK_SPEED_DIV8;
-	SPI2Handle.SPIConfig.SPI_SSM 		= SPI_SSM_DI;
-	SPI2Handle.SPIConfig.SPI_CPOL       = SPI_CPOL_HIGH;
+	SPI2Handle.SPIConfig.SPI_SSM 		= SPI_SSM_EN;
+	SPI2Handle.SPIConfig.SPI_CPOL       = SPI_CPOL_LOW;
+	SPI2Handle.SPIConfig.SPI_CPHA 		= SPI_CPHA_LOW;
 
 	SPI_Init(&SPI2Handle);
 
@@ -72,27 +74,24 @@ int main()
 {
 	uint8_t user_data = 0x1;
 
-	GPIO_handle_t buttonPin;
-	buttonPin.pGPIOx = GPIOC;
-	buttonPin.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_IN;
-	buttonPin.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_13;
-	buttonPin.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
-	buttonPin.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
-	GPIO_Init(&buttonPin);
+	GPIO_ButtonConfig();
 
 	SPI2_GPIOInits();
 
 	SPI2_Inits();
 
+	//Enable this to use software slave management
+	SSI_Config(SPI2, ENABLE);		//always use Software Slave Management for  automatic CS
 	SSOE_Config(SPI2, ENABLE);
-
-	SPI_Enable(SPI2, ENABLE);
 
 	while(1)
 	{
-		if( !GPIO_ReadIPin(	GPIOC, GPIO_PIN_13) )
+		if( !GPIO_ReadIPin(	GPIOC, GPIO_PIN_12) )
 		{
 			for(int i =0; i < 300000; i++);
+
+			SPI_Enable(SPI2, ENABLE);
+
 			SPI_SendData(SPI2, &user_data, sizeof(user_data));
 
 			//CONFIRM SPI IS NOT BUSY
@@ -103,7 +102,6 @@ int main()
 		}
 	}
 
-	//SPI_Enable(SPI2, DISABLE);
 
 }
 #endif

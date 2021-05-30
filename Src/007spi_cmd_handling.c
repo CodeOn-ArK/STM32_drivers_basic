@@ -2,13 +2,14 @@
  * 005spi_Tx_only.c
  *
  *  Created on: 11-Jan-2021
- *      Author: KIIT
+ *      Author: ArK
  */
 #if 0
 #include "stm32f446xx.h"
 #include "stm32f446xx_spi.h"
 #include "stm32f446xx_gpio.h"
 #include <string.h>
+#include "main.h"
 
 /*
  * PB12 -->	SPI2_NSS
@@ -61,7 +62,7 @@ void SPI2_GPIOInits()
 	SPI_pin.GPIO_PinConfig.GPIO_PinAltFunMode = 5;
 	SPI_pin.GPIO_PinConfig.GPIO_PinMode = GPIO_ALT_FN;
 	SPI_pin.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
-	SPI_pin.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
+	SPI_pin.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_LOW;
 	SPI_pin.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
 
 	//NSS
@@ -120,13 +121,7 @@ int main()
 	uint8_t rec_byte;
 	uint8_t args[2];
 
-	GPIO_handle_t buttonPin;
-	buttonPin.pGPIOx = GPIOA;
-	buttonPin.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_IN;
-	buttonPin.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_10;
-	buttonPin.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;
-	buttonPin.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
-	GPIO_Init(&buttonPin);
+	GPIO_ButtonConfig();
 
 	SPI2_GPIOInits();
 	SPI2_Inits();
@@ -142,7 +137,7 @@ int main()
 	while(1)
 	{
 		//WAIT TILL BUTTON IS PRESSED
-		while( (GPIO_ReadIPin(GPIOA, GPIO_PIN_10)) );
+		while( (GPIO_ReadIPin(GPIOC, GPIO_PIN_12)) );
 
 		//DELAY TO COMPENSATE BUTTON DEBOUNCING
 		delay(5);
@@ -178,7 +173,7 @@ int main()
 		/* CMD <SENSOR READ> */
 
 		//WAIT TILL BUTTON IS PRESSED
-	while( (GPIO_ReadIPin(GPIOA, GPIO_PIN_10)) );
+	while( (GPIO_ReadIPin(GPIOC, GPIO_PIN_12)) ){};
 
 		//DELAY TO COMPENSATE BUTTON DEBOUNCING
 		delay(5);
@@ -224,7 +219,7 @@ int main()
 		 */
 
 		//WAIT TILL BUTTON IS PRESSED
-	while( (GPIO_ReadIPin(GPIOA, GPIO_PIN_10)) );
+	while( (GPIO_ReadIPin(GPIOC, GPIO_PIN_12)) ){};
 
 		//DELAY TO COMPENSATE BUTTON DEBOUNCING
 		delay(5);
@@ -257,7 +252,7 @@ int main()
 		 */
 
 		//WAIT TILL BUTTON IS PRESSED
-	while( (GPIO_ReadIPin(GPIOA, GPIO_PIN_10)) );
+	while( (GPIO_ReadIPin(GPIOC, GPIO_PIN_12)) ){};
 
 		//DELAY TO COMPENSATE BUTTON DEBOUNCING
 		delay(5);
@@ -289,7 +284,7 @@ int main()
 		 * 5. COMMAND_ID_READ  <rec_ID>
 		 */
 		//WAIT TILL BUTTON IS PRESSED
-	while( (GPIO_ReadIPin(GPIOA, GPIO_PIN_10)) );
+	while( (GPIO_ReadIPin(GPIOC, GPIO_PIN_12)) ){};
 
 		//DELAY TO COMPENSATE BUTTON DEBOUNCING
 		delay(5);

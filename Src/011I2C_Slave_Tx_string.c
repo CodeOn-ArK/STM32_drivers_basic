@@ -2,7 +2,7 @@
  * 011I2C_Slave_Tx_string.c
  *
  *  Created on: Feb 21, 2021
- *      Author: ark
+ *      Author: ArK
  */
 
 

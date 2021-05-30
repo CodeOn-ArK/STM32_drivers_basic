@@ -181,7 +181,7 @@ void I2C_Enable(I2C_RegDef_t *pI2Cx , uint8_t EN_DI)
  */
 uint8_t I2C_GetFagStatus(I2C_RegDef_t *pI2Cx, uint32_t FlagName)
 {
-	if(pI2Cx->SR1 & (0x1 << FlagName) )
+	if( pI2Cx->SR1 & (0x1 << FlagName) )
 		return FLAG_SET;
 
 	return FLAG_RESET;
@@ -561,7 +561,7 @@ void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRXBuffer, uint32_
 		tempreg = pI2CHandle->pI2Cx->SR2;
 
 		//Read the data until Len becomes Zero
-		for(uint32_t i = Len; i > 0; i--)
+		for(uint32_t i = Len+1; i > 1; i--)
 		{
 			if(i == 2)
 			{

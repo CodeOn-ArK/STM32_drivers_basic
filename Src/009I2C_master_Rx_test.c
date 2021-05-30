@@ -2,13 +2,14 @@
  * 009I2C_master_Rx_test.c
  *
  *  Created on: 12-Feb-2021
- *      Author: ark
+ *      Author: ArK
  */
 #if 0
 
 #include"stm32f446xx.h"
 #include"stm32f446xx_gpio.h"
 #include"stm32f446xx_i2c.h"
+#include "main.h"
 
 #include<string.h>
 #include<stdint.h>
@@ -27,15 +28,10 @@ void I2C1_GPIOInits();
 void I2C1_Inits();
 
 I2C_Handle_t I2C1Handle;
-uint8_t pRxBuffer[40];
+volatile uint8_t pRxBuffer[40];
 
 #define MASTERS_ADDRESS 	 0x38
-#define SLAVE_ADDR  0x68
-
-void delay()
-{
-	for(uint32_t i=0; i<300000; i++);
-}
+#define SLAVE_ADDR  		 0x68
 
 void I2C1_GPIOInits()
 {
@@ -70,34 +66,11 @@ void I2C1_Inits()
 	I2C_Init(&I2C1Handle);
 }
 
-void GPIO_BtnLedInit(void)
-{
-	GPIO_handle_t GPIOBtn, GPIOLed;
-
-	//GPIO btn conifg
-	GPIOBtn.pGPIOx = GPIOA;
-	GPIOBtn.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_10;
-	GPIOBtn.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_IN;
-	GPIOBtn.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;
-	GPIOBtn.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
-	GPIOBtn.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_MEDIUM;
-	GPIO_Init(&GPIOBtn);
-
-	//GPIO LED config
-	GPIOLed.pGPIOx = GPIOA;
-	GPIOLed.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_5;
-	GPIOLed.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUT;
-	GPIOLed.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
-	GPIOLed.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
-	GPIOLed.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_MEDIUM;
-	GPIO_Init(&GPIOLed);
-
-}
 int main()
 {
 
 	//GPIO Button Init
-	GPIO_BtnLedInit();
+	GPIO_ButtonConfig();
 
 	//I2C pin inits
 	I2C1_GPIOInits();
@@ -106,25 +79,26 @@ int main()
 	I2C1_Inits();
 
 	uint8_t cmnd_send, cmnd_read;
+	cmnd_send = (uint8_t)0x51;
+	cmnd_read = (uint8_t)0x52;
+	uint8_t var;
 
 	I2C_Init(&I2C1Handle);
 	I2C_Enable(I2C1Handle.pI2Cx, ENABLE);
 
 	while(1)
 	{
-		cmnd_send = (uint8_t)0x51;
-		cmnd_read = (uint8_t)0x52;
-
-		if( !GPIO_ReadIPin(GPIOA, GPIO_PIN_10) )
+		if( GPIO_ReadIPin(GPIOC, GPIO_PIN_12) == GPIO_PIN_RESET )
 		{
 			delay();
+
 			I2C_MasterSendData( &I2C1Handle, &cmnd_send, 1,SLAVE_ADDR ); // Send Command to Arduino to instruct it to send the length of the information
 
-			I2C_MasterReceiveData(&I2C1Handle, pRxBuffer, 1, SLAVE_ADDR); //Recieve Command from Arduino
+			I2C_MasterReceiveData(&I2C1Handle, &var, 1, SLAVE_ADDR); //Recieve Command from Arduino
 
 			I2C_MasterSendData(&I2C1Handle, &cmnd_read, 1, SLAVE_ADDR);
 
-			I2C_MasterReceiveData(&I2C1Handle, pRxBuffer, I2C1Handle.RxSize, SLAVE_ADDR);
+			I2C_MasterReceiveData(&I2C1Handle, pRxBuffer, var, SLAVE_ADDR);
 
 		}
 	}

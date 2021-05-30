@@ -2,7 +2,7 @@
  * 008I2C_master_Tx_test.c
  *
  *  Created on: 11-Feb-2021
- *      Author: ark
+ *      Author: ArK
  */
 
 #if 0
@@ -11,6 +11,7 @@
 #include"stm32f446xx_i2c.h"
 #include"string.h"
 #include"stdint.h"
+#include "main.h"
 
 /*
  * I2C peripheral initialization:
@@ -24,28 +25,26 @@ void delay();
 void I2C1_GPIOInits();
 void I2C1_Inits();
 
-#define MASTERS_ADDRESS 	 0x38
-#define SLAVE_ADDR  0x68
+#define MASTERS_ADDRESS 	 0x38		//Set the master address here
+#define SLAVE_ADDR  		0x68		//Set the slave address here
 
 uint8_t data[] = "Testing I2C @#??";
 
+//global I2C handle variable
 I2C_Handle_t I2C1Handle;
 
-void delay()
-{
-	for(uint32_t i=0; i<300000; i++);
-}
 
 void I2C1_GPIOInits()
 {
+	//Initialize the GPIO pins to be used with I2C peripheral
 	GPIO_handle_t 	I2CPins;
 
 	I2CPins.pGPIOx = GPIOB;
 	I2CPins.GPIO_PinConfig.GPIO_PinMode = GPIO_ALT_FN;
 	I2CPins.GPIO_PinConfig.GPIO_PinAltFunMode = 4;
-	I2CPins.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
+	I2CPins.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_LOW;
 	I2CPins.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_OD;
-	I2CPins.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;
+	I2CPins.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;			//Always keep this pulled up
 
 	//SDA
 	I2CPins.GPIO_PinConfig.GPIO_PinNumber  =  GPIO_PIN_3;
@@ -62,6 +61,7 @@ void I2C1_GPIOInits()
 void I2C1_Inits()
 {
 
+	//Initiliaze the I2C peripheral
 	I2C1Handle.pI2Cx  = I2C2;
 	I2C1Handle.I2C_Config.I2C_ACKControl = I2C_ACK_EN;
 	I2C1Handle.I2C_Config.I2C_DeviceAddress  =  MASTERS_ADDRESS;
@@ -71,34 +71,11 @@ void I2C1_Inits()
 	I2C_Init(&I2C1Handle);
 }
 
-void GPIO_BtnLedInit(void)
-{
-	GPIO_handle_t GPIOBtn, GPIOLed;
-
-	//GPIO btn conifg
-	GPIOBtn.pGPIOx = GPIOA;
-	GPIOBtn.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_10;
-	GPIOBtn.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_IN;
-	GPIOBtn.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;
-	GPIOBtn.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
-	GPIOBtn.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_LOW;
-	GPIO_Init(&GPIOBtn);
-
-	//GPIO LED config
-	GPIOLed.pGPIOx = GPIOA;
-	GPIOLed.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_5;
-	GPIOLed.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUT;
-	GPIOLed.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
-	GPIOLed.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_LOW;
-	GPIOLed.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
-	GPIO_Init(&GPIOLed);
-
-}
 int main()
 {
 
 	//GPIO Button Init
-	GPIO_BtnLedInit();
+	GPIO_ButtonConfig();
 
 	//I2C pin initsI2C1Handle
 	I2C1_GPIOInits();
@@ -106,10 +83,12 @@ int main()
 	//I2C peripheral config
 	I2C1_Inits();
 
+	//Enable the Peripheral
 	I2C_Enable( I2C2 , ENABLE);
+
 	while(1)
 	{
-		if( !GPIO_ReadIPin(GPIOA, GPIO_PIN_10) )
+		if( GPIO_ReadIPin(GPIOC, GPIO_PIN_12) == GPIO_PIN_SET)
 		{//Send data
 			delay();
 
