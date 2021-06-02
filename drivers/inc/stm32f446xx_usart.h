@@ -115,6 +115,16 @@ typedef struct{
 #define USART_BUSY_IN_RX 					1
 #define USART_FREE							2
 
+/*
+ * @USART_Events
+ */
+#define USART_EVENT_TX_COMPLT						0
+#define USART_EVENT_								1
+#define USART_EVENT_								2
+#define USART_EVENT_								3
+#define USART_EVENT_								4
+#define USART_EVENT_								5
+#define USART_EVENT_								6
 
 /*******************************************************************************************************************************************************
  *
