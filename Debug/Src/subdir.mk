@@ -16,6 +16,7 @@ C_SRCS += \
 ../Src/010I2C_master_Rx_test_IT.c \
 ../Src/011I2C_Slave_Tx_string.c \
 ../Src/012UART_Tx.c \
+../Src/013USART_TxRx_IT.c \
 ../Src/sysmem.c 
 
 OBJS += \
@@ -31,6 +32,7 @@ OBJS += \
 ./Src/010I2C_master_Rx_test_IT.o \
 ./Src/011I2C_Slave_Tx_string.o \
 ./Src/012UART_Tx.o \
+./Src/013USART_TxRx_IT.o \
 ./Src/sysmem.o 
 
 C_DEPS += \
@@ -46,6 +48,7 @@ C_DEPS += \
 ./Src/010I2C_master_Rx_test_IT.d \
 ./Src/011I2C_Slave_Tx_string.d \
 ./Src/012UART_Tx.d \
+./Src/013USART_TxRx_IT.d \
 ./Src/sysmem.d 
 
 
@@ -74,6 +77,8 @@ Src/011I2C_Slave_Tx_string.o: ../Src/011I2C_Slave_Tx_string.c
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DSTM32 -DSTM32F4 -DSTM32F446RETx -DDEBUG -DNUCLEO_F446RE -c -I"/home/ark/STM32CubeIDE/workspace_1.5.0/stm32f446xx_drivers/drivers/inc" -I"/home/ark/STM32CubeIDE/workspace_1.5.0/stm32f446xx_drivers/drivers/src" -I../Inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Src/011I2C_Slave_Tx_string.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
 Src/012UART_Tx.o: ../Src/012UART_Tx.c
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DSTM32 -DSTM32F4 -DSTM32F446RETx -DDEBUG -DNUCLEO_F446RE -c -I"/home/ark/STM32CubeIDE/workspace_1.5.0/stm32f446xx_drivers/drivers/inc" -I"/home/ark/STM32CubeIDE/workspace_1.5.0/stm32f446xx_drivers/drivers/src" -I../Inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Src/012UART_Tx.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
+Src/013USART_TxRx_IT.o: ../Src/013USART_TxRx_IT.c
+	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DSTM32 -DSTM32F4 -DSTM32F446RETx -DDEBUG -DNUCLEO_F446RE -c -I"/home/ark/STM32CubeIDE/workspace_1.5.0/stm32f446xx_drivers/drivers/inc" -I"/home/ark/STM32CubeIDE/workspace_1.5.0/stm32f446xx_drivers/drivers/src" -I../Inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Src/013USART_TxRx_IT.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
 Src/sysmem.o: ../Src/sysmem.c
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DSTM32 -DSTM32F4 -DSTM32F446RETx -DDEBUG -DNUCLEO_F446RE -c -I"/home/ark/STM32CubeIDE/workspace_1.5.0/stm32f446xx_drivers/drivers/inc" -I"/home/ark/STM32CubeIDE/workspace_1.5.0/stm32f446xx_drivers/drivers/src" -I../Inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Src/sysmem.d" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
 

@@ -10,6 +10,7 @@
 "Src/010I2C_master_Rx_test_IT.o"
 "Src/011I2C_Slave_Tx_string.o"
 "Src/012UART_Tx.o"
+"Src/013USART_TxRx_IT.o"
 "Src/sysmem.o"
 "Startup/startup_stm32f446retx.o"
 "drivers/src/stm32f446xx_gpio.o"

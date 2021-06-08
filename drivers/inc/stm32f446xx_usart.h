@@ -36,8 +36,8 @@ typedef struct{
 
 	uint8_t 	RxBusyState;										//@USART_State
 	uint8_t 	TxBusyState;										//@USART_State
-	uint8_t 	pRxBuffer;
-	uint8_t 	pTxBuffer;
+	uint8_t 	*pRxBuffer;
+	uint8_t 	*pTxBuffer;
 	uint8_t 	TxLen;
 	uint8_t 	RxLen;
 
@@ -119,11 +119,11 @@ typedef struct{
  * @USART_Events
  */
 #define USART_EVENT_TX_COMPLT						0
-#define USART_EVENT_								1
-#define USART_EVENT_								2
-#define USART_EVENT_								3
-#define USART_EVENT_								4
-#define USART_EVENT_								5
+#define USART_EVENT_RX_COMPLT						1
+#define USART_EVENT_ERR_NE							2
+#define USART_EVENT_ERR_ORE							3
+#define USART_EVENT_CTS								4
+#define USART_EVENT_IDLE							5
 #define USART_EVENT_								6
 
 /*******************************************************************************************************************************************************
